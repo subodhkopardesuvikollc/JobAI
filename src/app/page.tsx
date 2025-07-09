@@ -2,36 +2,22 @@
 import CandidateTable from "@/components/CandidateTable";
 import React, { useState, useRef } from "react";
 
-// Mock Data: In a real application, this would likely come from an API call
-
-// Main App Component
-// based on the job description submitted.
 export type Candidates = {
   fileName: string;
   fileUrl: string;
   score: string;
 };
+
 export default function Home() {
-  // --- State Management ---
-  // Stores the text from the job description textarea.
   const [jobDescription, setJobDescription] = useState("");
-  // Stores the list of candidates to display.
   const [candidates, setCandidates] = useState<Candidates[]>();
-  // Controls the visibility of the results section.
-  const [showResults, setShowResults] = useState(true);
-  // Manages the validation error state for the textarea.
+  const [showResults, setShowResults] = useState(false);
   const [error, setError] = useState("");
 
-  // --- Refs ---
-  // A ref to the results section to enable smooth scrolling.
-  const resultsRef = useRef<HTMLDivElement>(null);
-
-  // --- Event Handlers ---
   const handleFindCandidates = async () => {
-    // 1. Validate Input
     if (jobDescription.trim() === "") {
       setError("Please paste a job description first!");
-      return; // Stop execution if textarea is empty
+      return;
     }
 
     const response = await fetch("http://localhost:8080/search", {
@@ -44,7 +30,7 @@ export default function Home() {
 
     if (!response.ok) {
       setError("Failed to fetch candidates. Please try again later.");
-      return; // Stop execution if the request fails
+      return;
     }
     const data = await response.json();
 
@@ -90,7 +76,7 @@ export default function Home() {
                 value={jobDescription}
                 onChange={(e) => {
                   setJobDescription(e.target.value);
-                  if (error) setError(""); // Clear error on typing
+                  if (error) setError("");
                 }}
               />
               <button
@@ -101,7 +87,6 @@ export default function Home() {
               </button>
             </div>
 
-            {/* Candidate Results Section - Conditionally Rendered */}
             {showResults && <CandidateTable candidates={candidates || null} />}
           </div>
         </main>
