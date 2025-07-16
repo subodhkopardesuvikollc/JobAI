@@ -1,3 +1,4 @@
+import { POST } from "@/app/api/jd/route";
 import { useState } from "react";
 
 export const useFileUpload = () => {
@@ -14,21 +15,25 @@ export const useFileUpload = () => {
         const formData = new FormData();
         formData.append("file", file);
 
-        const response = await fetch("/api/upload", {
+        const response = await fetch("/api/jd", {
           method: "POST",
           body: formData,
         });
 
         if (!response.ok) {
           const errorText = await response.text();
-          throw new Error("Failed to upload file: " + errorText);
+          setError("Failed to upload file: " + errorText);
+          throw new Error(errorText);
         }
 
         return await response.text();
       });
 
-      await Promise.all(uploadPromises);
-      setSuccess(true);
+      const results = await Promise.all(uploadPromises);
+      if (results.length > 0) {
+        setSuccess(true);
+        setError("");
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : "Upload failed");
     } finally {
@@ -51,9 +56,6 @@ export const useFileUpload = () => {
   return {
     isLoading,
     error,
-    setError,
-    setIsLoading,
-    setSuccess,
     success,
     uploadFiles,
     uploadText,

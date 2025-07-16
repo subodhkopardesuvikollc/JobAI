@@ -1,33 +1,52 @@
 import { NextResponse } from "next/server";
 
+const backendURL = process.env.API_BASE_URL;
+
 export async function POST(request: Request) {
   const formData = await request.formData();
 
-  const backedURL = process.env.API_BASE_URL;
-
-  if (!backedURL) {
+  if (!backendURL) {
     return new NextResponse("API base URL is not set", { status: 500 });
   }
   try {
-    const response = await fetch(`${backedURL}/jd/upload`, {
+    const response = await fetch(`${backendURL}/jd/upload`, {
       method: "POST",
       body: formData,
     });
 
     if (!response.ok) {
+      if (response.status === 413) {
+        return new NextResponse(
+          "File(s) too large. Please upload a smaller file.",
+          {
+            status: 413,
+          }
+        );
+      }
       const errorText = await response.text();
+
       return new NextResponse("Failed to upload file: " + errorText, {
-        status: 500,
+        status: response.status,
         statusText: response.statusText,
       });
     }
 
     const textResponse = await response.text();
 
-    return new NextResponse("Successfully uploaded file", { status: 200 });
+    return new NextResponse(textResponse, { status: 200 });
   } catch (error) {
     return new NextResponse("Failed to upload file: " + error, {
       status: 500,
     });
   }
 }
+
+// export async function GET() {
+//   if (!backendURL) {
+//     return new NextResponse("API base URL is not set", { status: 500 });
+//   }
+
+//   try{
+//     const response = fetch(`${backendURL}/`)
+//   }
+// }
