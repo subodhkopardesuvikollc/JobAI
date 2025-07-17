@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export const useFileUpload = () => {
+export const useFileUpload = (type: string) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
@@ -14,7 +14,7 @@ export const useFileUpload = () => {
         const formData = new FormData();
         formData.append("file", file);
 
-        const response = await fetch("/api/jd", {
+        const response = await fetch("/api/" + type, {
           method: "POST",
           body: formData,
         });
@@ -34,7 +34,9 @@ export const useFileUpload = () => {
         setError("");
         fetch("/api/revalidate", {
           method: "POST",
-          body: JSON.stringify({ tags: ["jds"] }),
+          body: JSON.stringify({
+            tags: [`${type === "resume" ? "resumes" : "jds"}`],
+          }),
         });
       }
     } catch (err) {

@@ -1,5 +1,5 @@
 import { formatFileName } from "@/utils/tableFunctions";
-import { JobDescription } from "@/utils/types";
+import { File } from "@/utils/types";
 import Link from "next/link";
 import React from "react";
 
@@ -7,7 +7,7 @@ const JdList = ({
   jdData,
   jdId,
 }: {
-  jdData: JobDescription[];
+  jdData: File[];
   jdId: string | string[] | undefined;
 }) => {
   return (

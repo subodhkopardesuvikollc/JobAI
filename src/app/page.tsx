@@ -1,8 +1,7 @@
 import JdDetails from "@/components/JdDetails";
 import JdList from "@/components/JdList";
 import JobDescriptionUpload from "@/components/JobDescriptionUpload";
-import { JobDescription } from "@/utils/types";
-import { Suspense } from "react";
+import { File } from "@/utils/types";
 
 interface Props {
   searchParams: Promise<{ jd: string }>; // searchParams is now a Promise
@@ -18,7 +17,7 @@ export default async function Home({ searchParams }: Props) {
     throw new Error("Failed to fetch job descriptions" + data);
   }
 
-  const jdData: JobDescription[] = await data.json();
+  const jdData: File[] = await data.json();
 
   return (
     <div>

@@ -20,13 +20,13 @@ const JobDescriptionUpload = () => {
     setSuccess,
     setError: setUploadError,
     success,
-  } = useFileUpload();
+  } = useFileUpload("jd");
 
   useEffect(() => {
     setError("");
     setUploadError("");
     setSuccess(false);
-  }, [activeTab, files, textJd]);
+  }, [activeTab, files, textJd, setSuccess, setUploadError]);
 
   const router = useRouter();
   const handleFileUpload = async () => {
@@ -95,7 +95,7 @@ const JobDescriptionUpload = () => {
                 textJd={textJd}
                 setTextJd={setTextJd}
                 isLoading={isLoading}
-                error={error}
+                error={uploadError}
                 success={success}
               />
             )}
@@ -110,9 +110,9 @@ const JobDescriptionUpload = () => {
               />
             )}
 
-            {uploadError && (
+            {error && (
               <div className="mt-4 text-red-600 text-sm font-medium">
-                {uploadError}
+                {error}
               </div>
             )}
 

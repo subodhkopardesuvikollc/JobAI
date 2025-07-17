@@ -1,7 +1,7 @@
 import { formatFileName } from "@/utils/tableFunctions";
 import Link from "next/link";
 import CandidateTable from "./CandidateTable";
-import { JobDescription } from "@/utils/types";
+import { File } from "@/utils/types";
 import { Suspense } from "react";
 
 const JdDetails = async ({
@@ -9,7 +9,7 @@ const JdDetails = async ({
   jdId,
 }: {
   jdId: string | undefined;
-  jdData: JobDescription[];
+  jdData: File[];
 }) => {
   const selectedJob = jdData.find((jd) => jd.id === jdId);
 
