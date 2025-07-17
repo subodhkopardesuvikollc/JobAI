@@ -41,12 +41,26 @@ export async function POST(request: Request) {
   }
 }
 
-// export async function GET() {
-//   if (!backendURL) {
-//     return new NextResponse("API base URL is not set", { status: 500 });
-//   }
+export async function GET() {
+  if (!backendURL) {
+    return NextResponse.json("API base URL is not set", { status: 500 });
+  }
 
-//   try{
-//     const response = fetch(`${backendURL}/`)
-//   }
-// }
+  try {
+    const response = await fetch(`${backendURL}/jd`);
+    if (!response.ok) {
+      return NextResponse.json("Failed to fetch job descriptions", {
+        status: response.status,
+        statusText: response.statusText,
+      });
+    }
+    const data = await response.json();
+    return NextResponse.json(data, {
+      status: 200,
+    });
+  } catch (error) {
+    return NextResponse.json("Failed to fetch job descriptions: " + error, {
+      status: 500,
+    });
+  }
+}

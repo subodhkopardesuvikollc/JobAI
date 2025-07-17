@@ -1,6 +1,5 @@
 "use client";
 
-import React, { useState } from "react";
 import Loader from "./Loader";
 
 interface TextUploadProps {
@@ -49,7 +48,7 @@ const TextUpload = ({
         <textarea
           id="job-description"
           name="job-description"
-          rows={12}
+          rows={4}
           className={`w-full p-4 border rounded-lg shadow-sm transition-shadow focus:outline-none focus:ring-2 focus:ring-blue-500 ${
             error ? "border-red-500" : "border-gray-300"
           }`}

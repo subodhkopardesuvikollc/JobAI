@@ -3,8 +3,9 @@ import { useFileUpload } from "@/hooks/useFileUpload";
 import { useEffect, useState } from "react";
 import FileUpload from "./FileUpload";
 import TextUpload from "./TextUpload";
+import { useRouter } from "next/navigation";
 
-const JobDescriptions = () => {
+const JobDescriptionUpload = () => {
   const [textJd, setTextJd] = useState({ title: "", description: "" });
 
   const [activeTab, setActiveTab] = useState("text");
@@ -16,20 +17,25 @@ const JobDescriptions = () => {
     error: uploadError,
     uploadFiles,
     uploadText,
+    setSuccess,
+    setError: setUploadError,
     success,
   } = useFileUpload();
 
   useEffect(() => {
     setError("");
-  }, [activeTab]);
+    setUploadError("");
+    setSuccess(false);
+  }, [activeTab, files, textJd]);
 
+  const router = useRouter();
   const handleFileUpload = async () => {
     if (activeTab === "text") {
       if (!textJd.description.trim() || !textJd.title.trim()) {
         setError("Please fill in both job title and description.");
         return;
       }
-      await uploadText(textJd.description, textJd.title);
+      await uploadText(textJd.description, textJd.title + ".txt");
     } else if (activeTab === "file") {
       if (files.length === 0) {
         setError("Please upload at least one file.");
@@ -37,6 +43,7 @@ const JobDescriptions = () => {
       }
       await uploadFiles(files);
     }
+    router.refresh();
   };
   return (
     <div className="container mx-auto p-4 sm:p-6 lg:p-8">
@@ -122,4 +129,4 @@ const JobDescriptions = () => {
   );
 };
 
-export default JobDescriptions;
+export default JobDescriptionUpload;

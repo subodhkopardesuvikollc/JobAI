@@ -1,4 +1,3 @@
-import { POST } from "@/app/api/jd/route";
 import { useState } from "react";
 
 export const useFileUpload = () => {
@@ -33,6 +32,10 @@ export const useFileUpload = () => {
       if (results.length > 0) {
         setSuccess(true);
         setError("");
+        fetch("/api/revalidate", {
+          method: "POST",
+          body: JSON.stringify({ tags: ["jds"] }),
+        });
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : "Upload failed");
@@ -56,6 +59,8 @@ export const useFileUpload = () => {
   return {
     isLoading,
     error,
+    setSuccess,
+    setError,
     success,
     uploadFiles,
     uploadText,
