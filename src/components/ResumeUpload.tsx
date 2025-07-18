@@ -1,8 +1,7 @@
 "use client";
-import React from "react";
-import FileUpload from "./FileUpload";
 import { useFileUpload } from "@/hooks/useFileUpload";
-import { useRouter } from "next/navigation";
+import React, { useEffect } from "react";
+import FileUpload from "./FileUpload";
 
 const ResumeUpload = () => {
   const [files, setFiles] = React.useState<File[]>([]);
@@ -17,13 +16,11 @@ const ResumeUpload = () => {
     success,
   } = useFileUpload("resume");
 
-  const router = useRouter();
-
-  React.useEffect(() => {
+  useEffect(() => {
     setError("");
     setUploadError("");
     setSuccess(false);
-  }, [files]);
+  }, [files, setSuccess, setUploadError]);
 
   const handleFileUpload = async () => {
     if (files.length === 0) {
@@ -31,12 +28,11 @@ const ResumeUpload = () => {
       return;
     }
     await uploadFiles(files);
-
-    router.refresh();
   };
 
   return (
     <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-md p-6 mb-8">
+      <h2 className="text-xl font-semibold mb-4">Upload New Resumes</h2>
       <FileUpload
         files={files}
         setFiles={setFiles}

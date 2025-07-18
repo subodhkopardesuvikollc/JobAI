@@ -1,3 +1,4 @@
+import { revalidate } from "@/utils/revalidate";
 import { useState } from "react";
 
 export const useFileUpload = (type: string) => {
@@ -28,17 +29,8 @@ export const useFileUpload = (type: string) => {
         return await response.text();
       });
 
-      const results = await Promise.all(uploadPromises);
-      if (results.length > 0) {
-        setSuccess(true);
-        setError("");
-        fetch("/api/revalidate", {
-          method: "POST",
-          body: JSON.stringify({
-            tags: [`${type === "resume" ? "resumes" : "jds"}`],
-          }),
-        });
-      }
+      await Promise.all(uploadPromises);
+      revalidate(type === "resume" ? ["resumes"] : ["jds"]);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Upload failed");
     } finally {

@@ -9,7 +9,7 @@ const Navbar = () => {
     "text-blue-600 font-semibold border-b-2 border-blue-600 pb-1";
   return (
     <div>
-      <nav className="container mx-auto bg-white px-10 rounded-b-2xl shadow-md py-4 flex justify-between items-center">
+      <nav className="mb-5 container mx-auto bg-white px-10 rounded-b-2xl shadow-md py-4 flex justify-between items-center">
         <div className="text-2xl font-bold text-slate-800">
           Candidate Matcher
         </div>
@@ -17,7 +17,7 @@ const Navbar = () => {
           <Link
             href="/"
             className={`${
-              pathname === "/"
+              pathname.startsWith("/jd/")
                 ? highlightClass
                 : "text-slate-600 hover:text-blue-600 transition-colors"
             } `}

@@ -8,6 +8,13 @@ const CandidateTable = ({
 }: {
   candidates: Candidates[] | null;
 }) => {
+  if (!candidates || candidates.length === 0) {
+    return (
+      <div className="text-center text-gray-500">
+        No candidates found for this job description.
+      </div>
+    );
+  }
   return (
     <div>
       <h2 className="text-2xl font-bold  text-gray-900 mb-4">
@@ -53,12 +60,12 @@ const CandidateTable = ({
                   <td className="px-6 py-4 whitespace-nowrap">
                     {candidate.fileUrl ? (
                       <Link
-                        href={candidate.fileUrl}
+                        href={candidate.fileUrl || "#"}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-sm text-indigo-600 hover:text-indigo-900"
                       >
-                        View Resume
+                        {candidate.fileUrl ? "View Resume" : "No URL"}
                       </Link>
                     ) : (
                       <span className="text-sm text-gray-500">No URL</span>

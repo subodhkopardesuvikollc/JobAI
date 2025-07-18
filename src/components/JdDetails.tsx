@@ -28,10 +28,12 @@ const JdDetails = async ({
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ blobName: selectedJob.fileName }),
       cache: "force-cache",
+      next: { tags: ["jdResults"] },
     }
   );
 
   const candidateData = await response.json();
+
   return (
     <div className="w-full bg-white h-[450px] p-6 rounded-xl overflow-y-auto shadow-md">
       <Suspense fallback={<div>Loading candidates...</div>}>
@@ -44,10 +46,10 @@ const JdDetails = async ({
           </span>
           <Link
             target="_blank"
-            href={candidateData.jdUrl}
+            href={candidateData.jdUrl || "#"}
             className="bg-white text-slate-700 border border-slate-300 font-bold py-2 px-4 rounded-lg hover:bg-slate-50 transition-colors text-sm"
           >
-            View JD
+            {candidateData.jdUrl ? "View JD" : "No URL"}
           </Link>
         </div>
         <CandidateTable candidates={candidateData.resumeResults} />
