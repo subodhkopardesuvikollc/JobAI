@@ -1,34 +1,12 @@
-import JdDetails from "@/components/JdDetails";
-import JdList from "@/components/JdList";
-import JobDescriptionUpload from "@/components/JobDescriptionUpload";
-import { File } from "@/utils/types";
+import ScreenLoader from "@/components/ScreenLoader";
+import { redirect } from "next/navigation";
 
-interface Props {
-  searchParams: Promise<{ jd: string }>; // searchParams is now a Promise
-}
-export default async function Home({ searchParams }: Props) {
-  const { jd: jdId } = await searchParams;
-
-  const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
-  const data = await fetch(`${apiBaseUrl}/api/jd`, {
-    next: { tags: ["jds"] },
-  });
-  if (!data.ok) {
-    throw new Error("Failed to fetch job descriptions" + data);
-  }
-
-  const jdData: File[] = await data.json();
+export default async function Home() {
+  redirect(`/jd`);
 
   return (
     <div>
-      <JobDescriptionUpload />
-      {jdData.length > 0 && (
-        <div className="container mx-auto max-w-5xl  justify-center mb-10 items-start w-full flex flex-col md:flex-row gap-10">
-          <JdList jdData={jdData} jdId={jdId} />
-
-          <JdDetails jdData={jdData} jdId={jdId || jdData[0]?.id} />
-        </div>
-      )}
+      <ScreenLoader message="Loading..." />
     </div>
   );
 }
