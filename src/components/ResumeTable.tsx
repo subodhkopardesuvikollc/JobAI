@@ -15,7 +15,7 @@ const ResumeTable = ({
 }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const data = paginatedData?.content || [];
-  const totalPages = paginatedData?.totalPages || 1;
+  const totalPages = paginatedData?.page.totalPages || 1;
   const router = useRouter();
 
   return (

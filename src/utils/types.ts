@@ -17,17 +17,14 @@ export type FileWithUrl = {
   fileUrl: string;
 };
 
-type pageable = {
-  pageNumber: number;
-  pageSize: number;
+type page = {
+  number: number;
+  totalElements: number;
+  totalPages: number;
+  size: number;
 };
 
 export type PaginatedData<T> = {
   content: T[];
-  totalElements: number;
-  totalPages: number;
-  size: number;
-  last: boolean;
-  pageable: pageable;
-  first: boolean;
+  page: page;
 };
