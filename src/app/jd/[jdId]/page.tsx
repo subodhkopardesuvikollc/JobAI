@@ -25,7 +25,7 @@ export default async function Jd({ params }: Props) {
         <div className="container mx-auto max-w-5xl  justify-center mb-10 items-start w-full flex flex-col md:flex-row gap-10">
           <JdList jdData={jdData} jdId={jdId} />
 
-          <JdDetails jdData={jdData} jdId={jdId || jdData[0]?.id} />
+          <JdDetails currentJD={jdData.find((jd) => jd.id === jdId)} />
         </div>
       )}
     </div>

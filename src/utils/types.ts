@@ -17,6 +17,11 @@ export type FileWithUrl = {
   fileUrl: string;
 };
 
+export type JdResponseData = {
+  jdUrl: string;
+  resumeResults: Candidates[];
+};
+
 type page = {
   number: number;
   totalElements: number;
