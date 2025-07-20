@@ -59,17 +59,17 @@ const ResumeTable = ({
                     </td>
                     <td className="py-2 px-4 text-right font-semibold text-[14px]">
                       <div
-                        className="w-fit ml-auto"
+                        className="w-fit ml-auto text-center"
                         style={file.fileUrl ? {} : { pointerEvents: "none" }}
                       >
                         <Link href={file.fileUrl || ""} target="_blank ">
                           {file.fileUrl ? (
-                            <p className="text-blue-500 px-2 py-[1px] rounded-full hover:bg-blue-200 bg-blue-100  transition-colors">
+                            <p className="text-blue-500 px-2 py-[1px] rounded-2xl hover:bg-blue-200 bg-blue-100  transition-colors">
                               View Resume
                             </p>
                           ) : (
-                            <p className="text-red-400 px-2 py-[1px] rounded-full bg-red-100 cursor-not-allowed transition-colors">
-                              No Resume Available
+                            <p className="text-red-400 px-2 py-[1px] rounded-2xl bg-red-100 cursor-not-allowed transition-colors">
+                              Not Available
                             </p>
                           )}
                         </Link>

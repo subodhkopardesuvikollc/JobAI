@@ -58,18 +58,22 @@ const CandidateTable = ({
                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    {candidate.fileUrl ? (
-                      <Link
-                        href={candidate.fileUrl || "#"}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-sm text-indigo-600 hover:text-indigo-900"
-                      >
-                        {candidate.fileUrl ? "View Resume" : "No URL"}
+                    <div
+                      className="w-fit  text-center"
+                      style={candidate.fileUrl ? {} : { pointerEvents: "none" }}
+                    >
+                      <Link href={candidate.fileUrl || ""} target="_blank ">
+                        {candidate.fileUrl ? (
+                          <p className="text-blue-500 px-2 py-[1px] rounded-2xl hover:bg-blue-200 bg-blue-100  transition-colors">
+                            View Resume
+                          </p>
+                        ) : (
+                          <p className="text-red-400 px-2 py-[1px] rounded-2xl bg-red-100 cursor-not-allowed transition-colors">
+                            Not Available
+                          </p>
+                        )}
                       </Link>
-                    ) : (
-                      <span className="text-sm text-gray-500">No URL</span>
-                    )}
+                    </div>
                   </td>
                   <td className="px-6 py-4 whitespace-normal">
                     <p className="text-sm text-gray-600">{candidate.score}</p>
