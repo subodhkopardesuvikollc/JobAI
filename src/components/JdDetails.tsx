@@ -1,42 +1,14 @@
-"use client";
 import { formatFileName } from "@/utils/tableFunctions";
 import { File, JdResponseData } from "@/utils/types";
 import Link from "next/link";
-import { Suspense, useEffect, useState } from "react";
+import { Suspense } from "react";
 import CandidateTable from "./CandidateTable";
 import ScreenLoader from "./ScreenLoader";
+import { fetchResultsData } from "@/utils/helperFunctions";
 
-const CandidateData = ({ blobName }: { blobName: string }) => {
-  const [candidateData, setCandidateData] = useState<JdResponseData | null>(
-    null
-  );
-  const [loading, setLoading] = useState(true);
+const CandidateData = async ({ blobName }: { blobName: string }) => {
+  const candidateData: JdResponseData | null = await fetchResultsData(blobName);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/jd/results`,
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ blobName }),
-            cache: "force-cache",
-          }
-        );
-        const data = await response.json();
-        setCandidateData(data);
-      } catch (error) {
-        console.error("Error fetching candidate data:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, [blobName]);
-
-  if (loading) return <ScreenLoader message="Loading candidates..." />;
   if (!candidateData) return <div>Failed to load candidate data</div>;
 
   return (

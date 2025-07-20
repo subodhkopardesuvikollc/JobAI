@@ -1,29 +1,21 @@
-import ResumeTable from "@/components/ResumeTable";
+import ResumeContent from "@/components/ResumeContent";
 import ResumeUpload from "@/components/ResumeUpload";
-import { FileWithUrl, PaginatedData } from "@/utils/types";
+import ScreenLoader from "@/components/ScreenLoader";
+import { Suspense } from "react";
 
 const page = async ({
   searchParams,
 }: {
-  searchParams: Promise<{ pageNo: number; pageSize: number }>;
+  searchParams: Promise<{ pageNo: string; pageSize: string }>;
 }) => {
-  const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
-  const { pageNo = 0, pageSize = 5 } = await searchParams;
-  const queryParams = new URLSearchParams();
-  queryParams.append("pageNo", pageNo.toString());
-  queryParams.append("pageSize", pageSize.toString());
-  const data = await fetch(`${baseUrl}/api/resume?${queryParams.toString()}`, {
-    cache: "force-cache",
-    next: { tags: ["resumes"] },
-  });
-  if (!data.ok) {
-    throw new Error("Failed to fetch resumes" + data);
-  }
-  const resumesData: PaginatedData<FileWithUrl> = await data.json();
+  const { pageNo = "0", pageSize = "5" } = await searchParams;
+
   return (
     <div className="container mx-auto px-6 py-8">
       <ResumeUpload />
-      <ResumeTable data={resumesData} />
+      <Suspense fallback={<ScreenLoader message="Loading resumes..." />}>
+        <ResumeContent pageNo={pageNo} pageSize={pageSize} />
+      </Suspense>
     </div>
   );
 };

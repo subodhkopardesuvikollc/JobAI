@@ -1,17 +1,17 @@
 "use client";
+import { revalidate } from "@/utils/revalidate";
 import { formatFileName } from "@/utils/tableFunctions";
 import { FileWithUrl, PaginatedData } from "@/utils/types";
 import Link from "next/link";
-import { Suspense, useState } from "react";
-import Pagination from "./Pagination";
 import { useRouter } from "next/navigation";
-import { revalidate } from "@/utils/revalidate";
+import { useState } from "react";
 import { IoMdRefresh } from "react-icons/io";
+import Pagination from "./Pagination";
 
 const ResumeTable = ({
-  data: paginatedData,
+  paginatedData,
 }: {
-  data: PaginatedData<FileWithUrl> | undefined;
+  paginatedData: PaginatedData<FileWithUrl>;
 }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const data = paginatedData?.content || [];
@@ -47,38 +47,36 @@ const ResumeTable = ({
               </tr>
             </thead>
 
-            <Suspense fallback={<div>Loading...</div>}>
-              <tbody>
-                {data.map((file, index) => (
-                  <tr key={index} className="border-b border-slate-200">
-                    <td className="py-2 px-4">
-                      {formatFileName(file.file.fileName)}
-                    </td>
-                    <td className="py-2 px-4">
-                      {new Date(file.file.createdAt).toLocaleDateString()}
-                    </td>
-                    <td className="py-2 px-4 text-right font-semibold text-[14px]">
-                      <div
-                        className="w-fit ml-auto text-center"
-                        style={file.fileUrl ? {} : { pointerEvents: "none" }}
-                      >
-                        <Link href={file.fileUrl || ""} target="_blank ">
-                          {file.fileUrl ? (
-                            <p className="text-blue-500 px-2 py-[1px] rounded-2xl hover:bg-blue-200 bg-blue-100  transition-colors">
-                              View Resume
-                            </p>
-                          ) : (
-                            <p className="text-red-400 px-2 py-[1px] rounded-2xl bg-red-100 cursor-not-allowed transition-colors">
-                              Not Available
-                            </p>
-                          )}
-                        </Link>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </Suspense>
+            <tbody>
+              {data.map((file, index) => (
+                <tr key={index} className="border-b border-slate-200">
+                  <td className="py-2 px-4">
+                    {formatFileName(file.file.fileName)}
+                  </td>
+                  <td className="py-2 px-4" suppressHydrationWarning>
+                    {new Date(file.file.createdAt).toLocaleDateString()}
+                  </td>
+                  <td className="py-2 px-4 text-right font-semibold text-[14px]">
+                    <div
+                      className="w-fit ml-auto text-center"
+                      style={file.fileUrl ? {} : { pointerEvents: "none" }}
+                    >
+                      <Link href={file.fileUrl || ""} target="_blank ">
+                        {file.fileUrl ? (
+                          <p className="text-blue-500 px-2 py-[1px] rounded-2xl hover:bg-blue-200 bg-blue-100  transition-colors">
+                            View Resume
+                          </p>
+                        ) : (
+                          <p className="text-red-400 px-2 py-[1px] rounded-2xl bg-red-100 cursor-not-allowed transition-colors">
+                            Not Available
+                          </p>
+                        )}
+                      </Link>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
           </table>
           <Pagination
             showPrevNext
