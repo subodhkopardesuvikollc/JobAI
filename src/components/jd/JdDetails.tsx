@@ -3,7 +3,7 @@ import { File, JdResponseData } from "@/utils/types";
 import Link from "next/link";
 import { Suspense } from "react";
 import CandidateTable from "./CandidateTable";
-import ScreenLoader from "./ScreenLoader";
+import ScreenLoader from "../ScreenLoader";
 import { fetchResultsData } from "@/utils/helperFunctions";
 
 const CandidateData = async ({ blobName }: { blobName: string }) => {

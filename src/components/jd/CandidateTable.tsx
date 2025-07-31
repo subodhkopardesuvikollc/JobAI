@@ -1,13 +1,16 @@
-import { formatFileName } from "@/utils/tableFunctions";
+import { formatFileName, formatFileScore } from "@/utils/tableFunctions";
 import { Candidates } from "@/utils/types";
 import Link from "next/link";
 import React from "react";
+import Availability from "./Availability";
 
 const CandidateTable = ({
   candidates,
 }: {
   candidates: Candidates[] | null;
 }) => {
+  console.log("Candidates", candidates);
+
   if (!candidates || candidates.length === 0) {
     return (
       <div className="text-center text-gray-500">
@@ -39,13 +42,19 @@ const CandidateTable = ({
                   scope="col"
                   className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                 >
-                  Resume
+                  Score
                 </th>
                 <th
                   scope="col"
                   className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                 >
-                  Score
+                  Availability
+                </th>
+                <th
+                  scope="col"
+                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                >
+                  Action
                 </th>
               </tr>
             </thead>
@@ -57,6 +66,16 @@ const CandidateTable = ({
                       {formatFileName(candidate.fileName)}
                     </div>
                   </td>
+                  <td className="px-6 py-4 whitespace-normal">
+                    <p className="text-sm text-gray-600">
+                      {formatFileScore(candidate.score)}%
+                    </p>
+                  </td>
+
+                  <td className="px-6 py-4 whitespace-normal">
+                    <Availability resumeFileName={candidate.fileName} />
+                  </td>
+
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div
                       className="w-fit  text-center"
@@ -74,9 +93,6 @@ const CandidateTable = ({
                         )}
                       </Link>
                     </div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-normal">
-                    <p className="text-sm text-gray-600">{candidate.score}</p>
                   </td>
                 </tr>
               ))}
