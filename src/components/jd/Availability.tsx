@@ -3,14 +3,19 @@ import React, { useRef, useState } from "react";
 import Modal, { ModalRef } from "../ui/Modal";
 import useResume from "@/hooks/useResume";
 import Loader from "../Loader";
+import { formatFileName } from "@/utils/tableFunctions";
+import ComposeEmail from "./ComposeEmail";
+import { useJdContext } from "../providers/JdProvider";
 
 const Availability = ({ resumeFileName }: { resumeFileName: string }) => {
   const modalRef = useRef<ModalRef>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isEmailComposeOpen, setIsEmailComposeOpen] = useState(false);
+  const { jdFileName } = useJdContext();
 
   const openModal = () => {
     modalRef.current?.showModal();
-    setIsModalOpen(true); // Enable the query
+    setIsModalOpen(true);
   };
 
   const closeModal = () => {
@@ -18,43 +23,46 @@ const Availability = ({ resumeFileName }: { resumeFileName: string }) => {
     setIsModalOpen(false);
   };
 
+  const { data, isLoading, error } = useResume(resumeFileName, isModalOpen);
+
   return (
     <>
       <button onClick={openModal}>Open Modal</button>
 
       <Modal
         ref={modalRef}
-        title="Availability: Bob Williams"
+        title={`Availability: ${formatFileName(resumeFileName)}`}
         actionButton={{
-          label: "Compose Follow-up",
-          onClick: () => {
-            // Handle action
-            closeModal();
-          },
+          label: "Compose Email",
+          onClick: () => setIsEmailComposeOpen(!isEmailComposeOpen),
         }}
         onClose={closeModal}
       >
-        <AvailabilityData
-          resumeFileName={resumeFileName}
-          enabled={isModalOpen}
-        />
+        <AvailabilityData data={data} isLoading={isLoading} error={error} />
+        {isEmailComposeOpen && (
+          <ComposeEmail
+            data={{
+              jdFileName,
+              resumeFileName,
+            }}
+            onCancel={() => setIsEmailComposeOpen(!isEmailComposeOpen)}
+            onSubmit={() => {}}
+          />
+        )}
       </Modal>
     </>
   );
 };
 
 const AvailabilityData = ({
-  resumeFileName,
-  enabled,
+  data,
+  isLoading,
+  error,
 }: {
-  resumeFileName: string;
-  enabled: boolean;
+  data: any;
+  isLoading: boolean;
+  error: Error | null;
 }) => {
-  const { data, isLoading, error } = useResume(resumeFileName, enabled);
-
-  if (data) {
-    console.log("Resume data", data);
-  }
   return (
     <>
       {isLoading ? (
@@ -66,18 +74,6 @@ const AvailabilityData = ({
         </div>
       ) : (
         <div className="space-y-4">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-              <span className="text-blue-600">📧</span>
-            </div>
-            <div>
-              <p className="font-medium">Email Sent</p>
-              <p className="text-sm text-gray-500">2025-07-23</p>
-            </div>
-          </div>
-          <div className="bg-gray-50 p-3 rounded-md">
-            <p>Hi there, are you available to chat?</p>
-          </div>
           {data && (
             <div className="mt-4 p-3 bg-blue-50 rounded-md">
               <pre className="text-xs overflow-auto max-h-32">

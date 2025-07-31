@@ -34,7 +34,7 @@ export type PaginatedData<T> = {
   page: page;
 };
 
-type EmailDTO = {
+export type EmailDTO = {
   type: string;
   status: string;
   to: string;

@@ -69,7 +69,7 @@ const Modal = forwardRef<ModalRef, ModalProps>(
     return (
       <dialog
         ref={dialogRef}
-        className="backdrop:bg-black backdrop:bg-opacity-50 p-0 border-0 bg-transparent max-w-none max-h-none w-auto h-auto"
+        className="backdrop:bg-black/60 backdrop:bg-opacity-50 p-0 border-0 bg-transparent max-w-none max-h-none w-auto h-auto"
         onClose={onClose}
       >
         <div

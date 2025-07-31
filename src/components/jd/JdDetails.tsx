@@ -5,6 +5,7 @@ import { Suspense } from "react";
 import CandidateTable from "./CandidateTable";
 import ScreenLoader from "../ScreenLoader";
 import { fetchResultsData } from "@/utils/helperFunctions";
+import { JdProvider } from "../providers/JdProvider";
 
 const CandidateData = async ({ blobName }: { blobName: string }) => {
   const candidateData: JdResponseData | null = await fetchResultsData(blobName);
@@ -42,9 +43,11 @@ const JdDetails = ({ currentJD }: { currentJD: File | undefined }) => {
       <h2 className="text-3xl font-bold mb-4">
         {formatFileName(currentJD.fileName || "")}
       </h2>
-      <Suspense fallback={<ScreenLoader message="Loading candidates..." />}>
-        <CandidateData blobName={currentJD.blobName} />
-      </Suspense>
+      <JdProvider value={currentJD.blobName}>
+        <Suspense fallback={<ScreenLoader message="Loading candidates..." />}>
+          <CandidateData blobName={currentJD.blobName} />
+        </Suspense>
+      </JdProvider>
     </div>
   );
 };

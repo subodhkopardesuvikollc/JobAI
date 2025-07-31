@@ -1,5 +1,6 @@
 import JdDetails from "@/components/jd/JdDetails";
 import JdList from "@/components/jd/JdList";
+import { JdProvider } from "@/components/providers/JdProvider";
 import JobDescriptionUpload from "@/components/upload/JobDescriptionUpload";
 import { File } from "@/utils/types";
 
