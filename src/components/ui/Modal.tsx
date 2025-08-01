@@ -50,9 +50,9 @@ const Modal = forwardRef<ModalRef, ModalProps>(
 
     const sizeClasses = {
       sm: "w-[95vw] max-w-[600px] min-h-[400px]",
-      md: "w-[95vw] max-w-[800px] min-h-[500px]",
-      lg: "w-[95vw] max-w-[1000px] min-h-[600px]",
-      xl: "w-[95vw] max-w-[1200px] min-h-[700px]",
+      md: "w-[95vw] max-w-[800px] min-h-[400px]",
+      lg: "w-[95vw] max-w-[1000px] min-h-[400px]",
+      xl: "w-[95vw] max-w-[1200px] min-h-[400px]",
     };
 
     const handleClose = () => {

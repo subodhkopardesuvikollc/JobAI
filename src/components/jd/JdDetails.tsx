@@ -17,7 +17,6 @@ const CandidateData = async ({ blobName }: { blobName: string }) => {
       <div className="flex mb-10 items-center justify-between bg-slate-50 p-4 rounded-md">
         <span className="font-medium text-slate-700">{blobName}</span>
         <Link
-          target="_blank"
           href={candidateData.jdUrl || "#"}
           className="bg-white text-slate-700 border border-slate-300 font-bold py-2 px-4 rounded-lg hover:bg-slate-50 transition-colors text-sm"
         >
