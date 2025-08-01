@@ -12,8 +12,6 @@ const EmailHistory = ({
   currentEmail: EmailDTO | null;
   handleViewEmail: (email: EmailDTO | null) => void;
 }) => {
-  console.log("Email History", emailHistory);
-
   if (!emailHistory || emailHistory.length === 0) {
     return (
       <div className=" text-slate-500 text-center">
@@ -29,7 +27,7 @@ const EmailHistory = ({
           <div className="flex flex-col  items-center">
             <EmailIcon status={data.status} />
             {index < emailHistory.length - 1 && (
-              <div className=" h-16 w-[2px] bg-blue-300"></div>
+              <div className=" h-12 w-[2px] bg-blue-300"></div>
             )}
           </div>
           <div className="mt-[1px]">

@@ -18,7 +18,7 @@ export const JdProvider = ({
   );
   useEffect(() => {
     if (value) {
-      setJdContextProps({ ...jdContextProps, jdFileName: value });
+      setJdContextProps((prev) => ({ ...prev, jdFileName: value }));
     }
   }, [value]);
   return (

@@ -8,6 +8,7 @@ import ComposeEmail from "./ComposeEmail";
 import { useJdContext } from "../providers/JdProvider";
 import EmailHistory from "./EmailHistory";
 import { EmailDTO } from "@/utils/types";
+import useSendEmail from "@/hooks/useSendEmail";
 
 const Availability = ({ resumeFileName }: { resumeFileName: string }) => {
   const modalRef = useRef<ModalRef>(null);
@@ -27,14 +28,34 @@ const Availability = ({ resumeFileName }: { resumeFileName: string }) => {
   };
 
   const { data, isLoading, error } = useResume(resumeFileName, isModalOpen);
+  const { mutate, isPending, error: sendError } = useSendEmail(resumeFileName);
 
   const handleSendEmail = (data: EmailDTO) => {
     console.log("submitting", data);
+    mutate(data, {
+      onSuccess: () => {
+        setIsEmailComposeOpen(false);
+        setCurrentEmail(data);
+      },
+    });
   };
+  const checkClass = "bg-blue-100 text-blue-700 hover:bg-blue-200";
+  const sent = "bg-orange-100 text-orange-700 hover:bg-orange-200";
 
   return (
     <>
-      <button onClick={openModal}>Open Modal</button>
+      <button
+        onClick={openModal}
+        className={`text-[12.5px] cursor-pointer font-bold py-1 px-3 rounded-full tracking-[0.8px] transition-colors ${
+          data?.reachOutEmails?.length ? sent : checkClass
+        }`}
+      >
+        {data
+          ? data.reachOutEmails?.length
+            ? "Sent"
+            : "Check"
+          : "Click to Check"}
+      </button>
 
       <Modal
         ref={modalRef}
@@ -81,6 +102,8 @@ const Availability = ({ resumeFileName }: { resumeFileName: string }) => {
         )}{" "}
         {isEmailComposeOpen && (
           <ComposeEmail
+            isSending={isPending}
+            sendError={sendError?.message}
             data={{
               jdFileName,
               resumeFileName,

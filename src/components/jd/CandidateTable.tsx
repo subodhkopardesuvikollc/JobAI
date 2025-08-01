@@ -9,8 +9,6 @@ const CandidateTable = ({
 }: {
   candidates: Candidates[] | null;
 }) => {
-  console.log("Candidates", candidates);
-
   if (!candidates || candidates.length === 0) {
     return (
       <div className="text-center text-gray-500">
@@ -83,11 +81,11 @@ const CandidateTable = ({
                     >
                       <Link href={candidate.fileUrl || ""} target="_blank ">
                         {candidate.fileUrl ? (
-                          <p className="text-blue-500 px-2 py-[1px] rounded-2xl hover:bg-blue-200 bg-blue-100  transition-colors">
+                          <p className="bg-blue-100 text-blue-700 font-bold py-1 px-3 rounded-full hover:bg-blue-200 text-sm transition-colors">
                             View Resume
                           </p>
                         ) : (
-                          <p className="text-red-400 px-2 py-[1px] rounded-2xl bg-red-100 cursor-not-allowed transition-colors">
+                          <p className="bg-red-100 text-blue-400 font-bold py-1 px-3 rounded-full hover:bg-red-200 text-sm transition-colors">
                             Not Available
                           </p>
                         )}

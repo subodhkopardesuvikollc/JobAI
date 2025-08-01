@@ -1,14 +1,10 @@
 "use client";
 import useGenerateEmail from "@/hooks/useGenerateEmail";
-import {
-  formatFileName,
-  htmlToPlainText,
-  PlainTextToHtml,
-} from "@/utils/tableFunctions";
+import { htmlToPlainText, PlainTextToHtml } from "@/utils/tableFunctions";
 import { EmailDTO } from "@/utils/types";
 import React, { useEffect, useState } from "react";
-import ScreenLoader from "../ScreenLoader";
 import { IoMdClose } from "react-icons/io";
+import ScreenLoader from "../ScreenLoader";
 
 interface ComposeEmailProps {
   onSubmit: (emailContent: EmailDTO) => void;
@@ -17,10 +13,14 @@ interface ComposeEmailProps {
     resumeFileName: string;
     jdFileName: string;
   };
+  isSending?: boolean;
+  sendError?: string;
 }
 
 const ComposeEmail = ({
   onSubmit,
+  isSending,
+  sendError,
   data: emailData,
   onCancel,
 }: ComposeEmailProps) => {
@@ -63,8 +63,8 @@ const ComposeEmail = ({
       onSubmit({
         ...data,
         createdAt: new Date().toISOString().replace("Z", ""),
-        body,
-        subject,
+        body: PlainTextToHtml(body),
+        subject: subject,
       });
     }
   };
@@ -117,15 +117,46 @@ const ComposeEmail = ({
             className="w-full p-2 mt-1 border border-slate-300 rounded-md focus:ring-2 focus:ring-blue-500"
           />
         </div>
-        <div className="flex justify-end ">
+        <div className="flex justify-between items-center">
+          {sendError && (
+            <div className="text-red-600 text-sm font-medium mb-2">
+              {sendError}
+            </div>
+          )}
           <button
-            onClick={() => onSubmit}
-            disabled={!!formError}
+            type="submit"
+            disabled={!!formError || isSending}
             className={
-              "px-4 py-2 text-sm font-medium rounded-md transition-colors cursor-pointer text-white bg-blue-600 hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+              "px-4 py-2 ml-auto text-sm font-medium rounded-md transition-colors cursor-pointer text-white bg-blue-600 hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
             }
           >
-            Send Email
+            {isSending ? (
+              <span className="flex items-center gap-2">
+                <svg
+                  className="animate-spin h-4 w-4 text-white"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  />
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8v8z"
+                  />
+                </svg>
+                Sending...
+              </span>
+            ) : (
+              "Send Email"
+            )}
           </button>
         </div>
       </div>
