@@ -1,5 +1,5 @@
 import React, { ChangeEvent, useState } from "react";
-import Loader from "./Loader";
+import Loader from "../Loader";
 
 interface FileUploadProps {
   files: File[];

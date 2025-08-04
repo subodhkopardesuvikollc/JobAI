@@ -1,7 +1,8 @@
-import { formatFileName } from "@/utils/tableFunctions";
+import { formatFileName, formatFileScore } from "@/utils/tableFunctions";
 import { Candidates } from "@/utils/types";
 import Link from "next/link";
 import React from "react";
+import Availability from "./Availability";
 
 const CandidateTable = ({
   candidates,
@@ -39,13 +40,19 @@ const CandidateTable = ({
                   scope="col"
                   className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                 >
-                  Resume
+                  Score
                 </th>
                 <th
                   scope="col"
                   className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                 >
-                  Score
+                  Availability
+                </th>
+                <th
+                  scope="col"
+                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                >
+                  Action
                 </th>
               </tr>
             </thead>
@@ -57,6 +64,16 @@ const CandidateTable = ({
                       {formatFileName(candidate.fileName)}
                     </div>
                   </td>
+                  <td className="px-6 py-4 whitespace-normal">
+                    <p className="text-sm text-gray-600">
+                      {formatFileScore(candidate.score)}%
+                    </p>
+                  </td>
+
+                  <td className="px-6 py-4 whitespace-normal">
+                    <Availability resumeFileName={candidate.fileName} />
+                  </td>
+
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div
                       className="w-fit  text-center"
@@ -64,19 +81,16 @@ const CandidateTable = ({
                     >
                       <Link href={candidate.fileUrl || ""} target="_blank ">
                         {candidate.fileUrl ? (
-                          <p className="text-blue-500 px-2 py-[1px] rounded-2xl hover:bg-blue-200 bg-blue-100  transition-colors">
+                          <p className="bg-blue-100 text-blue-700 font-bold py-1 px-3 rounded-full hover:bg-blue-200 text-sm transition-colors">
                             View Resume
                           </p>
                         ) : (
-                          <p className="text-red-400 px-2 py-[1px] rounded-2xl bg-red-100 cursor-not-allowed transition-colors">
+                          <p className="bg-red-100 text-blue-400 font-bold py-1 px-3 rounded-full hover:bg-red-200 text-sm transition-colors">
                             Not Available
                           </p>
                         )}
                       </Link>
                     </div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-normal">
-                    <p className="text-sm text-gray-600">{candidate.score}</p>
                   </td>
                 </tr>
               ))}

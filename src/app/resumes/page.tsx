@@ -1,5 +1,5 @@
-import ResumeContent from "@/components/ResumeContent";
-import ResumeUpload from "@/components/ResumeUpload";
+import ResumeContent from "@/components/resume/ResumeContent";
+import ResumeUpload from "@/components/upload/ResumeUpload";
 import ScreenLoader from "@/components/ScreenLoader";
 import { Suspense } from "react";
 
