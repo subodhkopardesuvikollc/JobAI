@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { IoMdRefresh } from "react-icons/io";
-import Pagination from "./Pagination";
+import Pagination from "../Pagination";
 
 const ResumeTable = ({
   paginatedData,

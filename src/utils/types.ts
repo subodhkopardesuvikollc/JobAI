@@ -4,13 +4,13 @@ export type Candidates = {
   score: string;
 };
 
-export type File = {
+export interface File {
   id: string;
   fileName: string;
   blobName: string;
   createdAt: string;
   updatedAt: string;
-};
+}
 
 export type FileWithUrl = {
   file: File;
@@ -33,3 +33,17 @@ export type PaginatedData<T> = {
   content: T[];
   page: page;
 };
+
+export type EmailDTO = {
+  type: string;
+  status: string;
+  to: string;
+  subject: string;
+  body: string;
+  createdAt: string;
+};
+
+export interface Resume extends File {
+  emailId: string;
+  reachOutEmails: EmailDTO[];
+}

@@ -1,6 +1,6 @@
 "use client";
 
-import Loader from "./Loader";
+import Loader from "../Loader";
 
 interface TextUploadProps {
   textJd: { title: string; description: string };
