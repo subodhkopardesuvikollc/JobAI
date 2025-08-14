@@ -1,6 +1,6 @@
 "use client";
 const error = () => {
-  return <div>Error: Server not responding</div>;
+  return <div>Error: Unable to fetch resumes</div>;
 };
 
 export default error;
