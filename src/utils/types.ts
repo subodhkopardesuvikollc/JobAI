@@ -47,3 +47,8 @@ export interface Resume extends File {
   emailId: string;
   reachOutEmails: EmailDTO[];
 }
+
+export interface communicationDTO<T> {
+  type: string;
+  payload: T;
+}

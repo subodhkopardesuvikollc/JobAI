@@ -1,5 +1,4 @@
 import { EmailDTO } from "@/utils/types";
-import React from "react";
 import { HiOutlineMail } from "react-icons/hi";
 import { TbMailExclamation } from "react-icons/tb";
 

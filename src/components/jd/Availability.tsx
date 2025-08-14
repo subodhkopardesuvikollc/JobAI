@@ -1,14 +1,15 @@
 "use client";
-import React, { useRef, useState } from "react";
-import Modal, { ModalRef } from "../ui/Modal";
 import useResume from "@/hooks/useResume";
-import Loader from "../Loader";
-import { formatFileName, htmlToPlainText } from "@/utils/tableFunctions";
-import ComposeEmail from "./ComposeEmail";
-import { useJdContext } from "../providers/JdProvider";
-import EmailHistory from "./EmailHistory";
-import { EmailDTO } from "@/utils/types";
 import useSendEmail from "@/hooks/useSendEmail";
+import { formatFileName, htmlToPlainText } from "@/utils/tableFunctions";
+import { EmailDTO } from "@/utils/types";
+import { useRef, useState } from "react";
+import { IoMdRefresh } from "react-icons/io";
+import Loader from "../Loader";
+import { useJdContext } from "../providers/JdProvider";
+import Modal, { ModalRef } from "../ui/Modal";
+import ComposeEmail from "./ComposeEmail";
+import EmailHistory from "./EmailHistory";
 
 const Availability = ({ resumeFileName }: { resumeFileName: string }) => {
   const modalRef = useRef<ModalRef>(null);
@@ -27,11 +28,13 @@ const Availability = ({ resumeFileName }: { resumeFileName: string }) => {
     setIsModalOpen(false);
   };
 
-  const { data, isLoading, error } = useResume(resumeFileName, isModalOpen);
+  const { data, isLoading, error, refetch } = useResume(
+    resumeFileName,
+    isModalOpen
+  );
   const { mutate, isPending, error: sendError } = useSendEmail(resumeFileName);
 
   const handleSendEmail = (data: EmailDTO) => {
-    console.log("submitting", data);
     mutate(data, {
       onSuccess: () => {
         setIsEmailComposeOpen(false);
@@ -83,6 +86,14 @@ const Availability = ({ resumeFileName }: { resumeFileName: string }) => {
           </div>
         ) : (
           <div className="space-y-4">
+            <div className="flex w-fit ml-auto p-1 mb-4 active:rotate-360 transition-all duration-500 rounded-full hover:bg-slate-100">
+              <button
+                onClick={() => refetch()}
+                className="text-gray-500 hover:text-blue-500 cursor-pointer transition-colors"
+              >
+                <IoMdRefresh size={20} />
+              </button>
+            </div>
             <EmailHistory
               emailHistory={data?.reachOutEmails || []}
               currentEmail={currentEmail}

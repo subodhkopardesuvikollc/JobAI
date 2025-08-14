@@ -1,3 +1,5 @@
+import { COMMUNICATION_TYPES } from "@/utils/communicationConstants";
+import { communicationDTO, EmailDTO } from "@/utils/types";
 import { NextRequest, NextResponse } from "next/server";
 
 const apiBaseUrl = process.env.API_BASE_URL;
@@ -28,12 +30,15 @@ export async function POST(request: Request) {
   if (!apiBaseUrl) {
     return new Response("API base URL not configured", { status: 500 });
   }
-  const emailData = await request.json();
-  console.log("Sending email with data:", emailData);
+  const emailData: EmailDTO = await request.json();
+  const communicationData: communicationDTO<EmailDTO> = {
+    type: COMMUNICATION_TYPES.EMAIL,
+    payload: emailData,
+  };
 
-  const response = await fetch(`${apiBaseUrl}/email/send-email`, {
+  const response = await fetch(`${apiBaseUrl}/communication/produce`, {
     method: "POST",
-    body: JSON.stringify(emailData),
+    body: JSON.stringify(communicationData),
     headers: {
       "Content-Type": "application/json",
     },
