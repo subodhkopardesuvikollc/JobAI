@@ -1,8 +1,6 @@
 import { formatFileName } from "@/utils/tableFunctions";
 import { File } from "@/utils/types";
-import { Suspense } from "react";
 import { JdProvider } from "../providers/JdProvider";
-import ScreenLoader from "../ScreenLoader";
 import CandidateData from "./CandidateData";
 
 const JdDetails = ({ currentJD }: { currentJD: File | undefined }) => {
@@ -20,9 +18,7 @@ const JdDetails = ({ currentJD }: { currentJD: File | undefined }) => {
         {formatFileName(currentJD.fileName || "")}
       </h2>
       <JdProvider value={currentJD.blobName}>
-        <Suspense fallback={<ScreenLoader message="Loading candidates..." />}>
-          <CandidateData blobName={currentJD.blobName} />
-        </Suspense>
+        <CandidateData blobName={currentJD.blobName} />
       </JdProvider>
     </div>
   );
