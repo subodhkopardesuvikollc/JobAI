@@ -15,7 +15,7 @@ const Navbar = () => {
         </div>
         <div className={`flex items-center space-x-6`}>
           <Link
-            href="/"
+            href="/jd/new"
             className={`${
               pathname.startsWith("/jd/")
                 ? highlightClass

@@ -1,22 +1,32 @@
 "use client";
-import { revalidate } from "@/utils/revalidate";
 import { formatFileName } from "@/utils/tableFunctions";
 import { FileWithUrl, PaginatedData } from "@/utils/types";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { IoMdRefresh } from "react-icons/io";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 import Pagination from "../Pagination";
+import RefreshButton from "../ui/RefreshButton";
 
 const ResumeTable = ({
   paginatedData,
+  refetch,
 }: {
-  paginatedData: PaginatedData<FileWithUrl>;
+  paginatedData: PaginatedData<FileWithUrl> | undefined;
+  refetch: () => void;
 }) => {
-  const [currentPage, setCurrentPage] = useState(1);
   const data = paginatedData?.content || [];
   const totalPages = paginatedData?.page.totalPages || 1;
   const router = useRouter();
+  const params = useSearchParams();
+  const [currentPage, setCurrentPage] = useState<number>();
+
+  useEffect(() => {
+    const page = params.get("pageNo")
+      ? parseInt(params.get("pageNo") || "") + 1
+      : 1;
+
+    setCurrentPage(page);
+  }, [params]);
 
   return (
     <div className="bg-white rounded-lg max-w-4xl mx-auto  shadow-md p-6">
@@ -28,13 +38,8 @@ const ResumeTable = ({
             <h2 className="text-2xl font-bold mr-auto mb-5">
               Uploaded Resumes
             </h2>
-            <div className="flex items-center justify-between mb-4 active:rotate-360 transition-all duration-500 rounded-full hover:bg-slate-100">
-              <button
-                onClick={() => revalidate(["resumes"])}
-                className="text-gray-500 hover:text-blue-500 cursor-pointer transition-colors"
-              >
-                <IoMdRefresh size={20} />
-              </button>
+            <div className="flex items-center justify-between mb-4 ">
+              <RefreshButton onRefresh={refetch} />
             </div>
           </div>
 
@@ -81,9 +86,10 @@ const ResumeTable = ({
           <Pagination
             showPrevNext
             maxVisiblePages={3}
-            currentPage={currentPage}
+            currentPage={currentPage || 1}
             totalPages={totalPages}
             onPageChange={(page) => {
+              if (currentPage === page) return;
               setCurrentPage(page);
               router.push(`?pageNo=${page - 1}`);
             }}
