@@ -20,11 +20,7 @@ export const fetchResumeData = async (pageNo: string, pageSize: string) => {
   queryParams.append("pageNo", pageNo.toString());
   queryParams.append("pageSize", pageSize.toString());
   const data = await fetch(
-    `${apiBaseUrl}/api/resume?${queryParams.toString()}`,
-    {
-      cache: "force-cache",
-      next: { tags: ["resumes"] },
-    }
+    `${apiBaseUrl}/api/resume?${queryParams.toString()}`
   );
   if (!data.ok) {
     throw new Error("Failed to fetch resumes" + data);

@@ -3,7 +3,7 @@ import { revalidate } from "@/utils/revalidate";
 import { formatFileName } from "@/utils/tableFunctions";
 import { File } from "@/utils/types";
 import Link from "next/link";
-import { IoMdRefresh } from "react-icons/io";
+import RefreshButton from "../ui/RefreshButton";
 
 const JdList = ({
   jdData,
@@ -16,13 +16,8 @@ const JdList = ({
     <div className=" px-4 pt-6 mx-auto  min-w-[250px] h-[450px]  bg-white rounded-lg shadow-md">
       <div className="flex justify-between">
         <h3 className="text-xl font-bold mb-4 px-2">Available JDs</h3>
-        <div className="flex items-center justify-between active:rotate-360 transition-all duration-500 mb-4 px-1 rounded-full hover:bg-slate-100">
-          <button
-            onClick={() => revalidate(["jds", "jdResults"])}
-            className="text-gray-500 hover:text-blue-500 cursor-pointer transition-colors"
-          >
-            <IoMdRefresh size={20} />
-          </button>
+        <div className="flex items-center justify-between  mb-4 ">
+          <RefreshButton onRefresh={() => revalidate(["jds"])} />
         </div>
       </div>
 

@@ -1,16 +1,25 @@
-import { fetchResumeData } from "@/utils/helperFunctions";
-import React from "react";
+"use client";
+import { useAllResumes } from "@/hooks/useResume";
 import ResumeTable from "./ResumeTable";
+import ScreenLoader from "../ScreenLoader";
 
-const ResumeContent = async ({
+const ResumeContent = ({
   pageNo,
   pageSize,
 }: {
   pageNo: string;
   pageSize: string;
 }) => {
-  const data = await fetchResumeData(pageNo, pageSize);
-  return <ResumeTable paginatedData={data} />;
+  const { data, isLoading, isError, isFetching, refetch } = useAllResumes(
+    pageNo,
+    pageSize
+  );
+
+  if (isLoading) return <ScreenLoader message="Loading resumes..." />;
+  if (isFetching) return <ScreenLoader message="Refreshing resumes..." />;
+  if (isError) return <div>Error loading resumes</div>;
+
+  return <ResumeTable paginatedData={data} refetch={refetch} />;
 };
 
 export default ResumeContent;
