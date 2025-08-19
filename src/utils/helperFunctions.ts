@@ -7,8 +7,6 @@ export const fetchResultsData = async (blobName: string) => {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ blobName }),
-      cache: "force-cache",
-      next: { tags: ["jdResults"] },
     });
     const data = await response.json();
     return data;
