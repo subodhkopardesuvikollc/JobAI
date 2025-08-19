@@ -1,7 +1,8 @@
-import { Resume } from "@/utils/types";
+import { fetchResumeData } from "@/utils/helperFunctions";
+import { FileWithUrl, PaginatedData, Resume } from "@/utils/types";
 import { useQuery } from "@tanstack/react-query";
 
-const useResume = (resumeFileName: string, enabled: boolean = true) => {
+export const useResume = (resumeFileName: string, enabled: boolean = true) => {
   return useQuery<Resume, Error>({
     queryKey: ["resume", resumeFileName],
     queryFn: async () => {
@@ -15,4 +16,14 @@ const useResume = (resumeFileName: string, enabled: boolean = true) => {
   });
 };
 
-export default useResume;
+export const useAllResumes = (pageNo: string, pageSize: string) => {
+  if (pageNo.includes("-") || isNaN(Number(pageNo))) {
+    pageNo = "0";
+  }
+  return useQuery<PaginatedData<FileWithUrl>, Error>({
+    queryKey: ["resumes", pageNo, pageSize],
+    queryFn: () => fetchResumeData(pageNo, pageSize),
+    retry: 3,
+    staleTime: 10 * 60 * 1000, //10 mins
+  });
+};

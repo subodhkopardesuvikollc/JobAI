@@ -3,11 +3,14 @@ import { Candidates } from "@/utils/types";
 import Link from "next/link";
 import React from "react";
 import Availability from "./Availability";
+import RefreshButton from "../ui/RefreshButton";
 
 const CandidateTable = ({
   candidates,
+  refetch,
 }: {
-  candidates: Candidates[] | null;
+  candidates: Candidates[] | undefined;
+  refetch: () => void;
 }) => {
   if (!candidates || candidates.length === 0) {
     return (
@@ -18,9 +21,12 @@ const CandidateTable = ({
   }
   return (
     <div>
-      <h2 className="text-2xl font-bold  text-gray-900 mb-4">
-        Matching Candidates
-      </h2>
+      <div className="flex justify-between items-center">
+        <h2 className="text-2xl font-bold  text-gray-900 mb-4">
+          Matching Candidates
+        </h2>
+        <RefreshButton onRefresh={refetch} />
+      </div>
 
       {(!candidates || candidates.length === 0) && (
         <p className="text-gray-600">No candidates found.</p>

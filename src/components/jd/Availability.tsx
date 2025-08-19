@@ -1,5 +1,4 @@
 "use client";
-import useResume from "@/hooks/useResume";
 import useSendEmail from "@/hooks/useSendEmail";
 import { formatFileName, htmlToPlainText } from "@/utils/tableFunctions";
 import { EmailDTO } from "@/utils/types";
@@ -10,6 +9,7 @@ import { useJdContext } from "../providers/JdProvider";
 import Modal, { ModalRef } from "../ui/Modal";
 import ComposeEmail from "./ComposeEmail";
 import EmailHistory from "./EmailHistory";
+import { useResume } from "@/hooks/useResume";
 
 const Availability = ({ resumeFileName }: { resumeFileName: string }) => {
   const modalRef = useRef<ModalRef>(null);
