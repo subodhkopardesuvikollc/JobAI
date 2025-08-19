@@ -1,5 +1,9 @@
 name: Azure Static Web Apps CI/CD
 
+permissions:
+  pull-requests: write
+  contents: read
+
 on:
   push:
     branches:
@@ -44,3 +48,4 @@ jobs:
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_AGREEABLE_WAVE_05872000F }}
           action: "close"
+
