@@ -1,10 +1,9 @@
-import { formatFileName, formatFileScore } from "@/utils/tableFunctions";
+import { formatFileName } from "@/utils/tableFunctions";
 import { Candidates } from "@/utils/types";
 import Link from "next/link";
-import React from "react";
-import Availability from "./Availability";
 import RefreshButton from "../ui/RefreshButton";
 import Analysis from "./Analysis";
+import Availability from "./Availability";
 
 const CandidateTable = ({
   candidates,
