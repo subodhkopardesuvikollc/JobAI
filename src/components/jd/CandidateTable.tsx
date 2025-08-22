@@ -73,7 +73,7 @@ const CandidateTable = ({
                   </td>
                   <td className="px-6 py-4 whitespace-normal">
                     <Analysis
-                      name={formatFileName(candidate.fileName)}
+                      resumeFileName={candidate.fileName}
                       score={candidate.score}
                     />
                   </td>

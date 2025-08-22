@@ -1,6 +1,6 @@
 "use client";
 
-import useResultsData from "@/hooks/useResultsData";
+import { useResultsData } from "@/hooks/useResultsData";
 import Link from "next/link";
 import ScreenLoader from "../ScreenLoader";
 import CandidateTable from "./CandidateTable";

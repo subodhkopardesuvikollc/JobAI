@@ -7,13 +7,13 @@ const Badge = ({ value, showPercentage = true }: BadgeProps) => {
   const clampedValue = Math.max(0, Math.min(100, value));
 
   const getColors = (val: number) => {
-    if (val < 50)
+    if (val < 30)
       return {
         bg: "bg-red-100",
         text: "text-red-700",
         border: "border-red-200",
       };
-    if (val >= 50 && val < 60)
+    if (val >= 30 && val < 60)
       return {
         bg: "bg-orange-100",
         text: "text-orange-700",

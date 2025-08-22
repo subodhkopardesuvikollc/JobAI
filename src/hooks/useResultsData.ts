@@ -1,8 +1,8 @@
-import { fetchResultsData } from "@/utils/helperFunctions";
-import { JdResponseData } from "@/utils/types";
+import { fetchResultsData, fetchResumeAnalysis } from "@/utils/helperFunctions";
+import { JdResponseData, resumeAnalysis } from "@/utils/types";
 import { useQuery } from "@tanstack/react-query";
 
-const useResultsData = (blobName: string) => {
+export const useResultsData = (blobName: string) => {
   return useQuery<JdResponseData, Error>({
     queryKey: ["resultsData", blobName],
     queryFn: () => fetchResultsData(blobName),
@@ -11,4 +11,16 @@ const useResultsData = (blobName: string) => {
   });
 };
 
-export default useResultsData;
+export const useResumeAnalysis = (
+  resumeBlobName: string,
+  jdBlobName: string,
+  enable: boolean
+) => {
+  return useQuery<resumeAnalysis, Error>({
+    queryKey: ["resumeAnalysis", resumeBlobName, jdBlobName],
+    queryFn: () => fetchResumeAnalysis(resumeBlobName, jdBlobName),
+    retry: 3,
+    staleTime: 1000 * 60 * 5, // 5 minutes
+    enabled: enable,
+  });
+};

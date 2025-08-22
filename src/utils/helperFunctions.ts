@@ -25,3 +25,18 @@ export const fetchResumeData = async (pageNo: string, pageSize: string) => {
   const resumesData: PaginatedData<FileWithUrl> = await data.json();
   return resumesData;
 };
+
+export const fetchResumeAnalysis = async (
+  resumeBlobName: string,
+  jdBlobName: string
+) => {
+  const response = await fetch(
+    `/api/resume/analysis?resumeBlobName=${resumeBlobName}&jdBlobName=${jdBlobName}`
+  );
+
+  if (!response.ok) {
+    throw new Error(`Failed to fetch resume analysis, please try again later.`);
+  }
+  const data = await response.json();
+  return data;
+};
