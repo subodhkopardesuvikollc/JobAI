@@ -1,9 +1,9 @@
-import { formatFileName, formatFileScore } from "@/utils/tableFunctions";
+import { formatFileName } from "@/utils/tableFunctions";
 import { Candidates } from "@/utils/types";
 import Link from "next/link";
-import React from "react";
-import Availability from "./Availability";
 import RefreshButton from "../ui/RefreshButton";
+import Analysis from "./Analysis";
+import Availability from "./Availability";
 
 const CandidateTable = ({
   candidates,
@@ -71,9 +71,10 @@ const CandidateTable = ({
                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-normal">
-                    <p className="text-sm text-gray-600">
-                      {formatFileScore(candidate.score)}%
-                    </p>
+                    <Analysis
+                      resumeFileName={candidate.fileName}
+                      score={candidate.score}
+                    />
                   </td>
 
                   <td className="px-6 py-4 whitespace-normal">

@@ -52,3 +52,13 @@ export interface communicationDTO<T> {
   type: string;
   payload: T;
 }
+
+export type resumeAnalysis = {
+  overallMatchScore: number;
+  summary: string;
+  skillAssessments: {
+    skill: string;
+    score: number;
+    reason: string;
+  }[];
+};
