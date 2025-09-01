@@ -1,54 +1,50 @@
 import { COMMUNICATION_TYPES } from "@/utils/communicationConstants";
 import { communicationDTO, EmailDTO } from "@/utils/types";
 import { NextRequest, NextResponse } from "next/server";
+import axiosInstance from "@/utils/axios";
 
-const apiBaseUrl = process.env.API_BASE_URL;
 export async function GET(request: NextRequest) {
-  if (!apiBaseUrl) {
-    return new Response("API base URL not configured", { status: 500 });
+  try {
+    const params = request.nextUrl.searchParams;
+
+    const response = await axiosInstance.get(
+      `/email/generate-email?${params.toString()}`
+    );
+
+    return new NextResponse(JSON.stringify(response.data), {
+      status: 200,
+      headers: { "Content-Type": "application/json" },
+    });
+  } catch (error: any) {
+    console.error("Email generation error:", error);
+    return new NextResponse(
+      error.response?.data || "Failed to generate email",
+      { status: error.response?.status || 500 }
+    );
   }
-
-  const params = request.nextUrl.searchParams;
-
-  const response = await fetch(
-    `${apiBaseUrl}/email/generate-email?${params.toString()}`
-  );
-
-  if (!response.ok) {
-    return new NextResponse("Failed to generate email", { status: 500 });
-  }
-
-  const data = await response.json();
-
-  return new NextResponse(JSON.stringify(data), {
-    status: 200,
-    headers: { "Content-Type": "application/json" },
-  });
 }
 
 export async function POST(request: Request) {
-  if (!apiBaseUrl) {
-    return new Response("API base URL not configured", { status: 500 });
-  }
-  const emailData: EmailDTO = await request.json();
-  const communicationData: communicationDTO<EmailDTO> = {
-    type: COMMUNICATION_TYPES.EMAIL,
-    payload: emailData,
-  };
+  try {
+    const emailData: EmailDTO = await request.json();
+    const communicationData: communicationDTO<EmailDTO> = {
+      type: COMMUNICATION_TYPES.EMAIL,
+      payload: emailData,
+    };
 
-  const response = await fetch(`${apiBaseUrl}/communication/produce`, {
-    method: "POST",
-    body: JSON.stringify(communicationData),
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-  if (!response.ok) {
-    return new NextResponse("Failed to send email", { status: 500 });
+    const response = await axiosInstance.post(
+      "/communication/produce",
+      communicationData
+    );
+
+    return new NextResponse(response.data, {
+      status: 200,
+      headers: { "Content-Type": "application/json" },
+    });
+  } catch (error: any) {
+    console.error("Email sending error:", error);
+    return new NextResponse(error.response?.data || "Failed to send email", {
+      status: error.response?.status || 500,
+    });
   }
-  const data = await response.text();
-  return new NextResponse(data, {
-    status: 200,
-    headers: { "Content-Type": "application/json" },
-  });
 }

@@ -1,30 +1,30 @@
 import { NextRequest, NextResponse } from "next/server";
+import axiosInstance from "@/utils/axios";
 
 export async function POST(request: NextRequest) {
-  const backendURL = process.env.API_BASE_URL;
+  try {
+    // Read and forward the request body properly
+    const requestBody = await request.text();
 
-  // Read and forward the request body properly
-  const requestBody = await request.text();
-
-  const data = await fetch(`${backendURL}/search`, {
-    method: "POST",
-    body: requestBody,
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-
-  if (!data.ok) {
-    return NextResponse.json("Failed to fetch candidates", {
-      status: data.status,
-      statusText: data.statusText,
+    const response = await axiosInstance.post("/search", requestBody, {
+      headers: {
+        "Content-Type": "application/json",
+      },
     });
+
+    return NextResponse.json(response.data, {
+      status: 200,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  } catch (error: any) {
+    console.error("Search error:", error);
+    return NextResponse.json(
+      error.response?.data || "Failed to fetch candidates",
+      {
+        status: error.response?.status || 500,
+      }
+    );
   }
-  const candidatesData = await data.json();
-  return NextResponse.json(candidatesData, {
-    status: 200,
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
 }
