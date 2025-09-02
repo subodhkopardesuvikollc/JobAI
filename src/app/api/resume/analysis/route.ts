@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import axiosInstance from "@/utils/axios";
+import { ApiError } from "@/utils/types";
 
 export async function GET(req: NextRequest) {
   const searchParams = req.nextUrl.searchParams;
@@ -16,11 +17,12 @@ export async function GET(req: NextRequest) {
     );
 
     return NextResponse.json(response.data);
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Resume analysis error:", error);
+    const apiError = error as ApiError;
     return new Response(
-      error.response?.data || "Failed to fetch analysis result",
-      { status: error.response?.status || 500 }
+      apiError.response?.data || "Failed to fetch analysis result",
+      { status: apiError.response?.status || 500 }
     );
   }
 }

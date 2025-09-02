@@ -63,3 +63,10 @@ export type resumeAnalysis = {
     reason: string;
   }[];
 };
+
+export interface ApiError extends Error {
+  response?: {
+    data?: string;
+    status?: number;
+  };
+}

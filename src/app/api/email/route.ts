@@ -1,5 +1,5 @@
 import { COMMUNICATION_TYPES } from "@/utils/communicationConstants";
-import { communicationDTO, EmailDTO } from "@/utils/types";
+import { communicationDTO, EmailDTO, ApiError } from "@/utils/types";
 import { NextRequest, NextResponse } from "next/server";
 import axiosInstance from "@/utils/axios";
 
@@ -15,11 +15,12 @@ export async function GET(request: NextRequest) {
       status: 200,
       headers: { "Content-Type": "application/json" },
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Email generation error:", error);
+    const apiError = error as ApiError;
     return new NextResponse(
-      error.response?.data || "Failed to generate email",
-      { status: error.response?.status || 500 }
+      apiError.response?.data || "Failed to generate email",
+      { status: apiError.response?.status || 500 }
     );
   }
 }
@@ -41,10 +42,11 @@ export async function POST(request: Request) {
       status: 200,
       headers: { "Content-Type": "application/json" },
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Email sending error:", error);
-    return new NextResponse(error.response?.data || "Failed to send email", {
-      status: error.response?.status || 500,
+    const apiError = error as ApiError;
+    return new NextResponse(apiError.response?.data || "Failed to send email", {
+      status: apiError.response?.status || 500,
     });
   }
 }

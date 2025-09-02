@@ -51,12 +51,12 @@ const useIndex = (resumeBlobName: string, currentStatus: string) => {
       await queryClient.cancelQueries({ queryKey: ["resume", resumeBlobName] });
 
       const previousResume =
-        (queryClient.getQueryData(["resume", resumeBlobName]) as any) ||
+        (queryClient.getQueryData(["resume", resumeBlobName]) as Resume) ||
         undefined;
 
       if (previousResume) {
         queryClient.setQueryData(["resume", resumeBlobName], {
-          ...previousResume.data,
+          ...previousResume,
           indexStatus: "INDEXING",
         });
       }
@@ -64,7 +64,7 @@ const useIndex = (resumeBlobName: string, currentStatus: string) => {
       return { previousResume };
     },
 
-    onError: (err, variables, context) => {
+    onError: () => {
       queryClient.invalidateQueries({ queryKey: ["resume", resumeBlobName] });
     },
     onSuccess: () => {

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import axiosInstance from "@/utils/axios";
+import { ApiError } from "@/utils/types";
 
 export async function POST(request: NextRequest) {
   try {
@@ -18,12 +19,13 @@ export async function POST(request: NextRequest) {
         "Content-Type": "application/json",
       },
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Search error:", error);
+    const apiError = error as ApiError;
     return NextResponse.json(
-      error.response?.data || "Failed to fetch candidates",
+      apiError.response?.data || "Failed to fetch candidates",
       {
-        status: error.response?.status || 500,
+        status: apiError.response?.status || 500,
       }
     );
   }

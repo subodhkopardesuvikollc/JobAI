@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import axiosInstance from "@/utils/axios";
+import { ApiError } from "@/utils/types";
 
 export async function GET(
   request: NextRequest,
@@ -15,10 +16,11 @@ export async function GET(
       status: 200,
       statusText: "OK",
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Resume fetch error:", error);
-    return NextResponse.json(error.response?.data || "Failed to fetch resume", {
-      status: error.response?.status || 500,
+    const apiError = error as ApiError;
+    return NextResponse.json(apiError.response?.data || "Failed to fetch resume", {
+      status: apiError.response?.status || 500,
     });
   }
 }

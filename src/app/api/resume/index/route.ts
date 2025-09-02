@@ -1,5 +1,6 @@
 import axiosInstance from "@/utils/axios";
 import { NextRequest, NextResponse } from "next/server";
+import { ApiError } from "@/utils/types";
 
 export async function POST(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
@@ -19,8 +20,9 @@ export async function POST(request: NextRequest) {
     );
 
     return NextResponse.json(response.data);
-  } catch (error: any) {
-    throw new Error(error.response.data);
+  } catch (error: unknown) {
+    const apiError = error as ApiError;
+    throw new Error(apiError.response?.data || apiError.message);
   }
 }
 
@@ -36,7 +38,10 @@ export async function GET(request: NextRequest) {
     const response = await axiosInstance.get(`/resume/${blobName}`);
 
     return NextResponse.json(response.data);
-  } catch (error: any) {
-    return NextResponse.json(error.response.data);
+  } catch (error: unknown) {
+    const apiError = error as ApiError;
+    return NextResponse.json(apiError.response?.data || apiError.message, {
+      status: apiError.response?.status || 500,
+    });
   }
 }
