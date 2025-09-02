@@ -14,7 +14,7 @@ export default async function Jd({ params }: Props) {
     next: { tags: ["jds"] },
   });
   if (!data.ok) {
-    throw new Error("Failed to fetch job descriptions" + data);
+    throw new Error("Failed to fetch job descriptions: " + data.statusText);
   }
   const jdData: File[] = await data.json();
 

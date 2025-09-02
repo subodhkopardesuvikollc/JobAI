@@ -12,8 +12,8 @@ export interface File {
   updatedAt: string;
 }
 
-export type FileWithUrl = {
-  file: File;
+export type FileWithUrl<T> = {
+  file: T;
   fileUrl: string;
 };
 
@@ -44,6 +44,7 @@ export type EmailDTO = {
 };
 
 export interface Resume extends File {
+  indexStatus: "NOT_INDEXED" | "INDEXING" | "INDEXED" | "FAILED";
   emailId: string;
   reachOutEmails: EmailDTO[];
 }

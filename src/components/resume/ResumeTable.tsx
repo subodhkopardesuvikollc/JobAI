@@ -1,17 +1,18 @@
 "use client";
 import { formatFileName } from "@/utils/tableFunctions";
-import { FileWithUrl, PaginatedData } from "@/utils/types";
+import { FileWithUrl, PaginatedData, Resume } from "@/utils/types";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import Pagination from "../Pagination";
 import RefreshButton from "../ui/RefreshButton";
+import IndexStatus from "./IndexStatus";
 
 const ResumeTable = ({
   paginatedData,
   refetch,
 }: {
-  paginatedData: PaginatedData<FileWithUrl> | undefined;
+  paginatedData: PaginatedData<FileWithUrl<Resume>> | undefined;
   refetch: () => void;
 }) => {
   const data = paginatedData?.content || [];
@@ -48,6 +49,9 @@ const ResumeTable = ({
               <tr className="border-b-2 border-slate-200">
                 <th className="py-2 px-4 font-semibold">Candidate Name</th>
                 <th className="py-2 px-4 font-semibold">Upload Date</th>
+                <th className="py-2 px-4 font-semibold text-center">
+                  Index Status
+                </th>
                 <th className="py-2 px-4 font-semibold text-right">Action</th>
               </tr>
             </thead>
@@ -61,6 +65,14 @@ const ResumeTable = ({
                   <td className="py-2 px-4" suppressHydrationWarning>
                     {new Date(file.file.createdAt).toLocaleDateString()}
                   </td>
+
+                  <td className="py-2 px-4 ">
+                    <IndexStatus
+                      resumeBlobName={file.file.blobName}
+                      initialStatus={file.file.indexStatus}
+                    />
+                  </td>
+
                   <td className="py-2 px-4 text-right font-semibold text-[14px]">
                     <div
                       className="w-fit ml-auto text-center"

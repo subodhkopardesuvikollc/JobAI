@@ -1,4 +1,4 @@
-import { FileWithUrl, PaginatedData } from "./types";
+import { FileWithUrl, PaginatedData, Resume } from "./types";
 
 export const fetchResultsData = async (blobName: string) => {
   try {
@@ -22,7 +22,7 @@ export const fetchResumeData = async (pageNo: string, pageSize: string) => {
   if (!data.ok) {
     throw new Error("Failed to fetch resumes" + data);
   }
-  const resumesData: PaginatedData<FileWithUrl> = await data.json();
+  const resumesData: PaginatedData<FileWithUrl<Resume>> = await data.json();
   return resumesData;
 };
 
