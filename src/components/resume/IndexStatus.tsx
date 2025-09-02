@@ -13,11 +13,12 @@ const IndexStatus = ({
   initialStatus: "NOT_INDEXED" | "INDEXING" | "INDEXED" | "FAILED";
 }) => {
   const iconProps = { size: 25 };
-  const { startIndexing, isStarting, currentStatus, resumeData, indexError } =
-    useIndex(resumeBlobName, initialStatus);
+  const { startIndexing, isStarting, currentStatus, indexError } = useIndex(
+    resumeBlobName,
+    initialStatus
+  );
 
   const status = currentStatus || initialStatus;
-  console.log("current resume", resumeData);
 
   const handleIndexingClick = () => {
     if (status === "NOT_INDEXED" || status === "FAILED") {

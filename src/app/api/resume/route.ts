@@ -6,7 +6,7 @@ export async function POST(request: Request) {
   try {
     const formData = await request.formData();
 
-    const response = await axiosInstance.post("/resume/upload", formData, {
+    const response = await axiosInstance().post("/resume/upload", formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
@@ -35,7 +35,7 @@ export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;
 
-    const response = await axiosInstance.get(
+    const response = await axiosInstance().get(
       `/resume?${searchParams.toString()}`
     );
 

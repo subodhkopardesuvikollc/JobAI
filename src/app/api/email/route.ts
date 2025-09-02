@@ -7,7 +7,7 @@ export async function GET(request: NextRequest) {
   try {
     const params = request.nextUrl.searchParams;
 
-    const response = await axiosInstance.get(
+    const response = await axiosInstance().get(
       `/email/generate-email?${params.toString()}`
     );
 
@@ -33,7 +33,7 @@ export async function POST(request: Request) {
       payload: emailData,
     };
 
-    const response = await axiosInstance.post(
+    const response = await axiosInstance().post(
       "/communication/produce",
       communicationData
     );

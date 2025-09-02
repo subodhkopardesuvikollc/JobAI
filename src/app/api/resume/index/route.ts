@@ -11,7 +11,7 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const response = await axiosInstance.post(
+    const response = await axiosInstance().post(
       "/uploadToVectorDB",
       {},
       {
@@ -35,7 +35,7 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const response = await axiosInstance.get(`/resume/${blobName}`);
+    const response = await axiosInstance().get(`/resume/${blobName}`);
 
     return NextResponse.json(response.data);
   } catch (error: unknown) {

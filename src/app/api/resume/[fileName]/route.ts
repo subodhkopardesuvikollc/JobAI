@@ -10,7 +10,7 @@ export async function GET(
     // Access the fileName parameter
     const { fileName } = await params;
 
-    const response = await axiosInstance.get(`/resume/${fileName}`);
+    const response = await axiosInstance().get(`/resume/${fileName}`);
 
     return NextResponse.json(response.data, {
       status: 200,
@@ -19,8 +19,11 @@ export async function GET(
   } catch (error: unknown) {
     console.error("Resume fetch error:", error);
     const apiError = error as ApiError;
-    return NextResponse.json(apiError.response?.data || "Failed to fetch resume", {
-      status: apiError.response?.status || 500,
-    });
+    return NextResponse.json(
+      apiError.response?.data || "Failed to fetch resume",
+      {
+        status: apiError.response?.status || 500,
+      }
+    );
   }
 }

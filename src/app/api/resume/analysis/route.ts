@@ -12,7 +12,7 @@ export async function GET(req: NextRequest) {
   }
 
   try {
-    const response = await axiosInstance.get(
+    const response = await axiosInstance().get(
       `/resume/analyze?resumeBlobName=${resumeBlobName}&jdBlobName=${jdBlobName}`
     );
 

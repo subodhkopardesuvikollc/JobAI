@@ -1,3 +1,4 @@
+import axiosInstance from "./axios";
 import { FileWithUrl, PaginatedData, Resume } from "./types";
 
 export const fetchResultsData = async (blobName: string) => {
@@ -18,6 +19,8 @@ export const fetchResumeData = async (pageNo: string, pageSize: string) => {
   const queryParams = new URLSearchParams();
   queryParams.append("pageNo", pageNo.toString());
   queryParams.append("pageSize", pageSize.toString());
+  console.log(axiosInstance().request.toString());
+
   const data = await fetch(`/api/resume?${queryParams.toString()}`);
   if (!data.ok) {
     throw new Error("Failed to fetch resumes" + data);

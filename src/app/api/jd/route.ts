@@ -6,7 +6,7 @@ export async function POST(request: Request) {
   try {
     const formData = await request.formData();
 
-    const response = await axiosInstance.post("/jd/upload", formData, {
+    const response = await axiosInstance().post("/jd/upload", formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
@@ -33,7 +33,7 @@ export async function POST(request: Request) {
 
 export async function GET() {
   try {
-    const response = await axiosInstance.get("/jd");
+    const response = await axiosInstance().get("/jd");
 
     return NextResponse.json(response.data, {
       status: 200,
