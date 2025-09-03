@@ -20,7 +20,7 @@ export const useAllResumes = (pageNo: string, pageSize: string) => {
   if (pageNo.includes("-") || isNaN(Number(pageNo))) {
     pageNo = "0";
   }
-  return useQuery<PaginatedData<FileWithUrl>, Error>({
+  return useQuery<PaginatedData<FileWithUrl<Resume>>, Error>({
     queryKey: ["resumes", pageNo, pageSize],
     queryFn: () => fetchResumeData(pageNo, pageSize),
     retry: 3,

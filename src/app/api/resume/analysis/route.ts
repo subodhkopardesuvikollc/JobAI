@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
+import axiosInstance from "@/utils/axios";
+import { ApiError } from "@/utils/types";
 
-const backendURL = process.env.API_BASE_URL;
 export async function GET(req: NextRequest) {
   const searchParams = req.nextUrl.searchParams;
   const resumeBlobName = searchParams.get("resumeBlobName");
@@ -10,15 +11,18 @@ export async function GET(req: NextRequest) {
     return new Response("Missing query parameters", { status: 400 });
   }
 
-  const analysisResult = await fetch(
-    `${backendURL}/resume/analyze?resumeBlobName=${resumeBlobName}&jdBlobName=${jdBlobName}`
-  );
+  try {
+    const response = await axiosInstance().get(
+      `/resume/analyze?resumeBlobName=${resumeBlobName}&jdBlobName=${jdBlobName}`
+    );
 
-  if (!analysisResult.ok) {
-    return new Response("Failed to fetch analysis result", { status: 500 });
+    return NextResponse.json(response.data);
+  } catch (error: unknown) {
+    console.error("Resume analysis error:", error);
+    const apiError = error as ApiError;
+    return new Response(
+      apiError.response?.data || "Failed to fetch analysis result",
+      { status: apiError.response?.status || 500 }
+    );
   }
-
-  const data = await analysisResult.json();
-
-  return NextResponse.json(data);
 }

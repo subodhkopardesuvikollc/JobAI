@@ -1,12 +1,15 @@
 import JdDetails from "@/components/jd/JdDetails";
 import JdList from "@/components/jd/JdList";
 import JobDescriptionUpload from "@/components/upload/JobDescriptionUpload";
+import { debugAxiosInstance } from "@/utils/axios";
 import { File } from "@/utils/types";
 
 interface Props {
   params: Promise<{ jdId: string }>;
 }
 export default async function Jd({ params }: Props) {
+  debugAxiosInstance();
+
   const { jdId } = await params;
   const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
   const data = await fetch(`${apiBaseUrl}/api/jd`, {
@@ -14,7 +17,7 @@ export default async function Jd({ params }: Props) {
     next: { tags: ["jds"] },
   });
   if (!data.ok) {
-    throw new Error("Failed to fetch job descriptions" + data);
+    throw new Error("Failed to fetch job descriptions: " + data.statusText);
   }
   const jdData: File[] = await data.json();
 
