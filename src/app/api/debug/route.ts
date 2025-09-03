@@ -1,4 +1,4 @@
-import axiosInstance, { debugAxiosInstance } from "@/utils/axios";
+import axiosInstance from "@/utils/axios";
 import { NextResponse } from "next/server";
 
 export async function GET() {
