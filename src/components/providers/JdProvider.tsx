@@ -1,9 +1,10 @@
 "use client";
+import { File } from "@/utils/types";
 import React, { createContext, useEffect } from "react";
 
 interface JdContextProps {
-  jdFileName: string;
-  setJdFileName: (jdBlobName: string) => void;
+  jd: File;
+  setJd: (jd: File) => void;
 }
 const JdContext = createContext<JdContextProps | null>(null);
 export const JdProvider = ({
@@ -11,21 +12,21 @@ export const JdProvider = ({
   value,
 }: {
   children: React.ReactNode;
-  value?: string;
+  value?: File;
 }) => {
   const [jdContextProps, setJdContextProps] = React.useState<JdContextProps>(
     {} as JdContextProps
   );
   useEffect(() => {
     if (value) {
-      setJdContextProps((prev) => ({ ...prev, jdFileName: value }));
+      setJdContextProps((prev) => ({ ...prev, jd: value as File }));
     }
   }, [value]);
   return (
     <JdContext.Provider
       value={{
-        jdFileName: jdContextProps.jdFileName,
-        setJdFileName: jdContextProps.setJdFileName,
+        jd: jdContextProps.jd,
+        setJd: jdContextProps.setJd,
       }}
     >
       {children}

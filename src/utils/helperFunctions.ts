@@ -43,3 +43,16 @@ export const fetchResumeAnalysis = async (
   const data = await response.json();
   return data;
 };
+
+export const fetchInterview = async (resumeId: string, jdId: string) => {
+  const response = await fetch(
+    `/api/interview?resumeId=${resumeId}&jdId=${jdId}`
+  );
+  if (!response.ok) {
+    throw new Error(
+      `Failed to fetch interview questions, please try again later.`
+    );
+  }
+  const data = await response.json();
+  return data;
+};

@@ -1,4 +1,5 @@
 export type Candidates = {
+  id: string;
   fileName: string;
   fileUrl: string;
   score: string;
@@ -70,3 +71,12 @@ export interface ApiError extends Error {
     status?: number;
   };
 }
+
+export type Interview = {
+  id: string;
+  jdId: string;
+  resumeId: string;
+  questions: string[];
+  status: "NOT_STARTED" | "QUEUED" | "IN_PROGRESS" | "COMPLETED" | "FAILED";
+  createdAt: string;
+};

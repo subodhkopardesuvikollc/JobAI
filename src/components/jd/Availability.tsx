@@ -15,7 +15,9 @@ const Availability = ({ resumeFileName }: { resumeFileName: string }) => {
   const modalRef = useRef<ModalRef>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEmailComposeOpen, setIsEmailComposeOpen] = useState(false);
-  const { jdFileName } = useJdContext();
+  const {
+    jd: { blobName: jdFileName },
+  } = useJdContext();
   const [currentEmail, setCurrentEmail] = useState<EmailDTO | null>(null);
 
   const openModal = () => {
