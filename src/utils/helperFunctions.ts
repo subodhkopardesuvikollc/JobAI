@@ -89,3 +89,16 @@ export const initiateCall = async (resumeId: string, jdId: string) => {
   const data = await response.json();
   return data;
 };
+
+export const fetchScreeningHistory = async (resumeId: string, jdId: string) => {
+  const response = await fetch(
+    `/api/screening?resumeId=${resumeId}&jdId=${jdId}`
+  );
+  if (!response.ok) {
+    throw new Error(
+      `Failed to fetch screening history, please try again later.`
+    );
+  }
+  const data = await response.json();
+  return data;
+};

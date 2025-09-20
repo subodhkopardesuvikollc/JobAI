@@ -12,6 +12,8 @@ import Modal, { ModalRef } from "../ui/Modal";
 import { formatFileName } from "@/utils/tableFunctions";
 import InterviewQuestions from "./InterviewQuestions";
 import { initiateCall } from "@/utils/helperFunctions";
+import ScreeningHistory from "./ScreeningHistory";
+import useScreeningHistory from "@/hooks/useScreeningHistory";
 
 const Screening = ({ candidate }: { candidate: Candidates }) => {
   const {
@@ -33,9 +35,6 @@ const Screening = ({ candidate }: { candidate: Candidates }) => {
 
   const activeClass =
     "border-b-2 border-blue-500 font-semibold text-blue-600 pb-1";
-  const [activeTab, setActiveTab] = useState<"screening" | "history">(
-    "screening"
-  );
 
   const {
     data,
@@ -47,6 +46,14 @@ const Screening = ({ candidate }: { candidate: Candidates }) => {
     saveInterviewPending,
   } = useInterviewQuestions(candidate.id, jdId);
 
+  const [activeTab, setActiveTab] = useState<"screening" | "history">(
+    data?.status === "COMPLETED" ? "history" : "screening"
+  );
+  const {
+    data: screeningHistoryData,
+    isLoading: isLoadingHistory,
+    isError: isErrorHistory,
+  } = useScreeningHistory(candidate.id, jdId, activeTab === "history");
   if (data?.status === "IN_PROGRESS" || data?.status === "QUEUED") {
     closeModal();
   }
@@ -82,7 +89,7 @@ const Screening = ({ candidate }: { candidate: Candidates }) => {
             initiateCall(candidate.id, jdId).then(() => {});
           },
           variant: "primary",
-          disabled: data?.status !== "NOT_STARTED",
+          disabled: data?.status !== "NOT_STARTED" && data?.status !== "FAILED",
         }}
       >
         <div className="flex gap-4">
@@ -112,6 +119,20 @@ const Screening = ({ candidate }: { candidate: Candidates }) => {
               setQuestions={setQuestions}
             />
           )}
+          {activeTab === "history" && (
+            <>
+              {isErrorHistory && (
+                <div className="text-red-500">Error loading history.</div>
+              )}
+              {isLoadingHistory ? (
+                <Loader />
+              ) : (
+                screeningHistoryData && (
+                  <ScreeningHistory history={screeningHistoryData} />
+                )
+              )}
+            </>
+          )}
         </div>
       </Modal>
     </div>
@@ -123,7 +144,7 @@ const ScreeningButton = ({ status }: { status: Interview["status"] }) => {
   return (
     <>
       {status === "COMPLETED" && (
-        <button className=" border-1 border-green-300 w-full justify-center px-3 py-2 text-sm font-medium cursor-pointer hover:bg-green-100 rounded-full flex gap-2 transition-colors duration-300">
+        <button className="p-2 px-3 py-2 w-full border-1 border-green-300 text-sm text-green-600 font-medium bg-green-100  rounded-full flex gap-1 items-center cursor-pointer">
           <IoDocumentTextOutline {...iconProps} />
           Completed
         </button>
@@ -147,7 +168,7 @@ const ScreeningButton = ({ status }: { status: Interview["status"] }) => {
       )}
       {status === "QUEUED" && (
         <button
-          className="p-2 px-3 py-2 w-full text-sm text-gray-600 font-medium cursor-pointer bg-gray-100  rounded-full flex gap-1 items-center"
+          className="p-2 px-3 py-2 w-full text-sm text-gray-600 font-medium cursor-not-allowed bg-gray-100  rounded-full flex gap-1 items-center"
           disabled
         >
           <CgSpinner
@@ -158,10 +179,7 @@ const ScreeningButton = ({ status }: { status: Interview["status"] }) => {
         </button>
       )}
       {status === "FAILED" && (
-        <button
-          className="p-2 px-3 py-2 w-full text-sm text-red-600 justify-around font-medium cursor-pointer bg-red-100 hover:bg-red-200  rounded-full flex  items-center transition-colors duration-300"
-          disabled
-        >
+        <button className="p-2 px-3 py-2 w-full text-sm text-red-600 justify-around font-medium cursor-pointer bg-red-100 hover:bg-red-200  rounded-full flex  items-center transition-colors duration-300">
           <GiCancel className="text-red-500 cursor-pointer " />
           Retry
         </button>

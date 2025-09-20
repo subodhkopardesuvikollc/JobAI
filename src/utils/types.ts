@@ -80,3 +80,21 @@ export type Interview = {
   status: "NOT_STARTED" | "QUEUED" | "IN_PROGRESS" | "COMPLETED" | "FAILED";
   createdAt: string;
 };
+
+export type Communication<T> = {
+  id: string;
+  jdId: string;
+  resumeId: string;
+  type: "PHONE" | "EMAIL";
+  timestamp: string;
+  content: T;
+};
+
+export type Utterance = {
+  speaker: "model" | "candidate";
+  text: string;
+};
+
+export interface CallContent {
+  utterances: Utterance[];
+}
