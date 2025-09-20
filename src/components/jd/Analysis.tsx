@@ -21,7 +21,9 @@ const Analysis = ({ score, resumeFileName: blobName }: props) => {
     setIsModalOpen(true);
   };
 
-  const { jdFileName } = useJdContext();
+  const {
+    jd: { blobName: jdFileName },
+  } = useJdContext();
 
   const { data, isLoading, error } = useResumeAnalysis(
     blobName,

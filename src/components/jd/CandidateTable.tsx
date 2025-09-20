@@ -93,7 +93,7 @@ const CandidateTable = ({
                   </td>
 
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <Screening resumeId={candidate.id} />
+                    <Screening candidate={candidate} />
                   </td>
                 </tr>
               ))}
