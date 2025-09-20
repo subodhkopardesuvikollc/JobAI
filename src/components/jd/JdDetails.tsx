@@ -17,7 +17,7 @@ const JdDetails = ({ currentJD }: { currentJD: File | undefined }) => {
       <h2 className="text-3xl font-bold mb-4">
         {formatFileName(currentJD.fileName || "")}
       </h2>
-      <JdProvider value={currentJD.blobName}>
+      <JdProvider value={currentJD}>
         <CandidateData blobName={currentJD.blobName} />
       </JdProvider>
     </div>

@@ -1,4 +1,5 @@
 export type Candidates = {
+  id: string;
   fileName: string;
   fileUrl: string;
   score: string;
@@ -69,4 +70,31 @@ export interface ApiError extends Error {
     data?: string;
     status?: number;
   };
+}
+
+export type Interview = {
+  id: string;
+  jdId: string;
+  resumeId: string;
+  questions: string[];
+  status: "NOT_STARTED" | "QUEUED" | "IN_PROGRESS" | "COMPLETED" | "FAILED";
+  createdAt: string;
+};
+
+export type Communication<T> = {
+  id: string;
+  jdId: string;
+  resumeId: string;
+  type: "PHONE" | "EMAIL";
+  timestamp: string;
+  content: T;
+};
+
+export type Utterance = {
+  speaker: "model" | "candidate";
+  text: string;
+};
+
+export interface CallContent {
+  utterances: Utterance[];
 }

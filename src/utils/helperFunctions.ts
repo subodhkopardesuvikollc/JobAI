@@ -43,3 +43,62 @@ export const fetchResumeAnalysis = async (
   const data = await response.json();
   return data;
 };
+
+export const fetchInterview = async (resumeId: string, jdId: string) => {
+  const response = await fetch(
+    `/api/interview?resumeId=${resumeId}&jdId=${jdId}`
+  );
+  if (!response.ok) {
+    throw new Error(
+      `Failed to fetch interview questions, please try again later.`
+    );
+  }
+  const data = await response.json();
+  return data;
+};
+
+export const saveInterview = async (
+  resumeId: string,
+  jdId: string,
+  questions: string[]
+) => {
+  const response = await fetch(`/api/interview/`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ resumeId, jdId, questions }),
+  });
+
+  if (!response.ok) {
+    throw new Error(
+      `Failed to save interview questions, please try again later.`
+    );
+  }
+  const data = await response.json();
+  return data;
+};
+
+export const initiateCall = async (resumeId: string, jdId: string) => {
+  const response = await fetch("/api/interview/call", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ resumeId, jdId }),
+  });
+  if (!response.ok) {
+    throw new Error(`Failed to initiate call, please try again later.`);
+  }
+  const data = await response.json();
+  return data;
+};
+
+export const fetchScreeningHistory = async (resumeId: string, jdId: string) => {
+  const response = await fetch(
+    `/api/screening?resumeId=${resumeId}&jdId=${jdId}`
+  );
+  if (!response.ok) {
+    throw new Error(
+      `Failed to fetch screening history, please try again later.`
+    );
+  }
+  const data = await response.json();
+  return data;
+};

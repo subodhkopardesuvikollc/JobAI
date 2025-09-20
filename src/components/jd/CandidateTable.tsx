@@ -4,6 +4,7 @@ import Link from "next/link";
 import RefreshButton from "../ui/RefreshButton";
 import Analysis from "./Analysis";
 import Availability from "./Availability";
+import Screening from "./Screening";
 
 const CandidateTable = ({
   candidates,
@@ -50,15 +51,15 @@ const CandidateTable = ({
                 </th>
                 <th
                   scope="col"
-                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
                 >
                   Availability
                 </th>
                 <th
                   scope="col"
-                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
                 >
-                  Action
+                  Screening
                 </th>
               </tr>
             </thead>
@@ -66,9 +67,19 @@ const CandidateTable = ({
               {candidates.map((candidate, index) => (
                 <tr key={index}>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm font-medium text-gray-900">
-                      {formatFileName(candidate.fileName)}
+                    <div
+                      className="w-fit  text-center"
+                      style={candidate.fileUrl ? {} : { pointerEvents: "none" }}
+                    >
+                      <Link href={candidate.fileUrl || ""}>
+                        {
+                          <p className="text-sm font-medium hover:underline">
+                            {formatFileName(candidate.fileName)}
+                          </p>
+                        }
+                      </Link>
                     </div>
+                    <div className="text-sm font-medium text-gray-900"></div>
                   </td>
                   <td className="px-6 py-4 whitespace-normal">
                     <Analysis
@@ -82,22 +93,7 @@ const CandidateTable = ({
                   </td>
 
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div
-                      className="w-fit  text-center"
-                      style={candidate.fileUrl ? {} : { pointerEvents: "none" }}
-                    >
-                      <Link href={candidate.fileUrl || ""} target="_blank ">
-                        {candidate.fileUrl ? (
-                          <p className="bg-blue-100 text-blue-700 font-bold py-1 px-3 rounded-full hover:bg-blue-200 text-sm transition-colors">
-                            View Resume
-                          </p>
-                        ) : (
-                          <p className="bg-red-100 text-blue-400 font-bold py-1 px-3 rounded-full hover:bg-red-200 text-sm transition-colors">
-                            Not Available
-                          </p>
-                        )}
-                      </Link>
-                    </div>
+                    <Screening candidate={candidate} />
                   </td>
                 </tr>
               ))}
