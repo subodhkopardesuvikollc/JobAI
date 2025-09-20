@@ -42,7 +42,6 @@ const Screening = ({ candidate }: { candidate: Candidates }) => {
     isError,
     refetch,
     saveInterviewMutate,
-    saveInterviewError,
     saveInterviewPending,
   } = useInterviewQuestions(candidate.id, jdId);
 

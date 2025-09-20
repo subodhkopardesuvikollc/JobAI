@@ -1,4 +1,5 @@
 import axiosInstance from "@/utils/axios";
+import { ApiError } from "next/dist/server/api-utils";
 import { NextRequest } from "next/server";
 
 export async function POST(req: NextRequest) {
@@ -13,6 +14,10 @@ export async function POST(req: NextRequest) {
     });
     return new Response(JSON.stringify(response.data), { status: 200 });
   } catch (error) {
-    return new Response("Failed to initiate call", { status: 500 });
+    const apiError = error as ApiError;
+
+    return new Response("Failed to initiate call: " + apiError.message, {
+      status: 500,
+    });
   }
 }

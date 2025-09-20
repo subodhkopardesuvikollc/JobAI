@@ -1,4 +1,5 @@
 import axiosInstance from "@/utils/axios";
+import { ApiError } from "next/dist/server/api-utils";
 import { NextRequest } from "next/server";
 
 export async function GET(request: NextRequest) {
@@ -14,7 +15,11 @@ export async function GET(request: NextRequest) {
     );
     return new Response(JSON.stringify(response.data), { status: 200 });
   } catch (error) {
-    return new Response("Error fetching interview data", { status: 500 });
+    const apiError = error as ApiError;
+
+    return new Response("Error fetching interview data: " + apiError.message, {
+      status: 500,
+    });
   }
 }
 
@@ -27,6 +32,10 @@ export async function POST(request: NextRequest) {
     const response = await axiosInstance().post(`/interview`, body);
     return new Response(JSON.stringify(response.data), { status: 200 });
   } catch (error) {
-    return new Response("Error saving interview data", { status: 500 });
+    const apiError = error as ApiError;
+
+    return new Response("Error saving interview data: " + apiError.message, {
+      status: 500,
+    });
   }
 }
